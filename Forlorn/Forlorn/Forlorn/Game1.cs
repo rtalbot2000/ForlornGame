@@ -19,6 +19,10 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Level level;
+
+        Texture2D testPixel;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -35,6 +39,12 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
 
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferWidth = 1080;
+            graphics.ApplyChanges();
+
+            this.level = new Level();
+
             base.Initialize();
         }
 
@@ -48,6 +58,7 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            testPixel = Content.Load<Texture2D>("test/pixel");
         }
 
         /// <summary>
@@ -67,7 +78,7 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
@@ -84,6 +95,12 @@ namespace Forlorn
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+
+            level.Draw(spriteBatch, gameTime);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
