@@ -56,7 +56,7 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            testPixel = Content.Load<Texture2D>("test/pixel");
+            testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
             this.level = new Level(testPixel);
         }
@@ -83,6 +83,8 @@ namespace Forlorn
 
             // TODO: Add your update logic here
 
+            level.Update();
+
             base.Update(gameTime);
         }
 
@@ -92,7 +94,7 @@ namespace Forlorn
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(147, 201, 227));
 
             // TODO: Add your drawing code here
 

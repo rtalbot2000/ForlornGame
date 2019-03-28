@@ -23,6 +23,17 @@ namespace Forlorn
         private Rectangle rect;
         private Texture2D texture;
 
+        public int ID
+        {
+            get
+            {
+                return id;
+            } 
+            set
+            {
+                this.id = value;
+            }
+        }
         public Vector2 Location
         {
             get
@@ -46,7 +57,8 @@ namespace Forlorn
         {
             this.id = id;
             this.location = new Vector2(x, y);
-            this.rect = new Rectangle(x * 8, y * 8, 8, 8);
+            this.rect = new Rectangle((400 - x) * 16, (y - 550) * 16, 16, 16);
+            //this.rect = new Rectangle((400 - x) * 3, (y - 550) * 3, 3, 3);
             this.texture = text;
         }
 
@@ -63,15 +75,6 @@ namespace Forlorn
                 default:
                     return Color.Transparent;
             }
-        }
-
-        public void UpdateOffset(float x, float y)
-        {
-            float xDiff = x - location.X;
-            float yDiff = y - location.Y;
-
-            rect.X = (int) (x + xDiff) * 8;
-            rect.Y = (int) (y + yDiff) * 8;
         }
 
         public void Draw(SpriteBatch spriteBatch)
