@@ -42,12 +42,12 @@ namespace Forlorn
             }
         }
 
-        public Block(int id, int x, int y, Texture2D texture)
+        public Block(int id, int x, int y, Texture2D text)
         {
             this.id = id;
             this.location = new Vector2(x, y);
             this.rect = new Rectangle(x * 8, y * 8, 8, 8);
-            this.texture = texture;
+            this.texture = text;
         }
 
         public Color GetColor()
@@ -78,7 +78,7 @@ namespace Forlorn
         {
             if (rect.X < 0 || rect.X > 1920 || rect.Y < 0 || rect.Y > 1080)
                 return;
-
+            
             spriteBatch.Draw(texture, rect, GetColor());
         }
     }

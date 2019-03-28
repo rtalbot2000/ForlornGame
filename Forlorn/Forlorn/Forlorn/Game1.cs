@@ -40,10 +40,8 @@ namespace Forlorn
             // TODO: Add your initialization logic here
 
             graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferWidth = 1080;
+            graphics.PreferredBackBufferHeight = 1080;
             graphics.ApplyChanges();
-
-            this.level = new Level();
 
             base.Initialize();
         }
@@ -59,6 +57,8 @@ namespace Forlorn
 
             // TODO: use this.Content to load your game content here
             testPixel = Content.Load<Texture2D>("test/pixel");
+
+            this.level = new Level(testPixel);
         }
 
         /// <summary>

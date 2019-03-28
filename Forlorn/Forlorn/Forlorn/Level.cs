@@ -13,9 +13,11 @@ namespace Forlorn
 
         private Texture2D testPixel;
 
-        public Level()
+        public Level(Texture2D testPixel)
         {
             blocks = new Block[800, 800];
+
+            this.testPixel = testPixel;
 
             GenerateLevel();
         }
@@ -37,10 +39,10 @@ namespace Forlorn
 
         public void Update()
         {
-            foreach(Block b in blocks)
-            {
-                b.UpdateOffset(400, 400);
-            }
+            //foreach(Block b in blocks)
+            //{
+            //    b.UpdateOffset(400, 700);
+            //}
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
