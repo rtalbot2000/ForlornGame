@@ -13,12 +13,17 @@ namespace Forlorn
     {
         private Texture2D texture;
         private Rectangle body;
-        
+        int timer = 0;
+        bool isJumping = false;
+        bool isFalling = false;
+        int initialY;
+        int remnantY;
         //Creates player dude
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
             body = new Rectangle(x, y, 8, 24);
+            initialY = body.Y;
         }
         //Returns texture of character
         public Texture2D getTexture()
@@ -32,25 +37,27 @@ namespace Forlorn
         }
         public void update(KeyboardState kb)
         {
+            remnantY = body.Y;
             if (kb.IsKeyDown(Keys.W))
             {
-                jump();
-                //body.Y--;
+                if (!isJumping)
+                    isJumping = true;
             }
             if (kb.IsKeyDown(Keys.A))
                 body.X--;
             if (kb.IsKeyDown(Keys.D))
                 body.X++;
-          
-        }
-        public void jump()
-        {
-            int velocityY = 5;
-            do
+            if (isJumping)
             {
-                body.Y -= velocityY;
-                velocityY -= 2;
-            } while (velocityY >= -5);
+                timer++;
+                double jumpVelocity = 10 + -0.5d * timer;
+                body.Y -= (int)jumpVelocity;
+                if (body.Y >= initialY)
+                {
+                    timer = 0;
+                    isJumping = false;
+                }
+            }
         }
     }
 }
