@@ -162,7 +162,7 @@ namespace Forlorn
             }
 
             Thread t = new Thread(() => MoveOffScreenObjects(x, y));
-            t.Start();
+            //t.Start();
 
             foreach(Block b in blocks)
             {

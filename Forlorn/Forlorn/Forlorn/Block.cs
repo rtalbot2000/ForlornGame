@@ -90,8 +90,7 @@ namespace Forlorn
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (rect.X < 0 || rect.X > 1920 || rect.Y < 0 || rect.Y > 1080)
-                return;
+            if (IsOffScreen()) return;
             
             spriteBatch.Draw(texture, rect, GetColor());
         }
