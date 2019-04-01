@@ -82,8 +82,9 @@ namespace Forlorn
                 this.Exit();
 
             // TODO: Add your update logic here
+            KeyboardState key = Keyboard.GetState();
 
-            level.Update();
+            level.Update(key);
 
             base.Update(gameTime);
         }

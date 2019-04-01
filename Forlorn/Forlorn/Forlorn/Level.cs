@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Forlorn
 {
@@ -58,7 +60,7 @@ namespace Forlorn
                 }
             }
 
-            for (int t = 0; t < 75; t++)
+            for (int t = 0; t < 135; t++)
             {
                 for (int x = 0; x < 800; x++)
                 {
@@ -67,19 +69,70 @@ namespace Forlorn
                         if (blocks[y, x].ID != 0 ||
                             (x > 395 && x < 405 && y > 399 && y < 405)) continue;
 
-                        if (rand.NextDouble() < .04 && y < 798)
+                        double startChance = .022;
+                        double chance = startChance;
+
+                        for(int yy = 1; yy < 20; yy++)
+                        {
+                            if (y + yy > 798) break;
+                            if(blocks[y + yy, x].ID == 0)
+                            {
+                                chance += .005;
+                                if (chance == .03)
+                                    break;
+                            }
+                        }
+
+                        if (rand.NextDouble() < chance && y < 798)
                         {
                             blocks[y + 1, x].ID = 0;
                         }
-                        if (rand.NextDouble() < .02 && x > 0)
+
+                        chance = startChance;
+                        for(int xx = -1; xx < -20; xx--)
+                        {
+                            if (x + xx < 0) break;
+                            if(blocks[y, x + xx].ID == 0)
+                            {
+                                chance += .005;
+                                if (chance >= .03) break;
+                            }
+                        }
+
+                        if (rand.NextDouble() < chance && x > 0)
                         {
                             blocks[y, x - 1].ID = 0;
                         }
-                        if (rand.NextDouble() < .02 && x < 798)
+
+                        chance = startChance;
+                        for (int xx = 1; xx < 20; xx++)
+                        {
+                            if (x + xx > 799) break;
+                            if (blocks[y, x + xx].ID == 0)
+                            {
+                                chance += .005;
+                                if (chance >= .03) break;
+                            }
+                        }
+
+                        if (rand.NextDouble() < chance && x < 798)
                         {
                             blocks[y, x + 1].ID = 0;
                         }
-                        if (rand.NextDouble() < .04 && y > 600)
+
+                        chance = startChance;
+                        for (int yy = -1; yy > -20; yy--)
+                        {
+                            if (y + yy < 605) break;
+                            if (blocks[y + yy, x].ID == 0)
+                            {
+                                chance += .005;
+                                if (chance == .03)
+                                    break;
+                            }
+                        }
+
+                        if (rand.NextDouble() < chance && y > 600)
                         {
                             blocks[y - 1, x].ID = 0;
                         }
@@ -88,10 +141,46 @@ namespace Forlorn
             }
         }
 
-        public void Update()
+        public void Update(KeyboardState key)
         {
-            
+            float x = 0, y = 0;
+            if(key.IsKeyDown(Keys.Down))
+            {
+                y -= 5;
+            }
+            if(key.IsKeyDown(Keys.Up))
+            {
+                y += 5;
+            }
+            if(key.IsKeyDown(Keys.Left))
+            {
+                x += 5;
+            }
+            if(key.IsKeyDown(Keys.Right))
+            {
+                x -= 5;
+            }
 
+            Thread t = new Thread(() => MoveOffScreenObjects(x, y));
+            t.Start();
+
+            foreach(Block b in blocks)
+            {
+                if (b.IsOffScreen())
+                    continue;
+
+                b.Move(x, y);
+            }
+        }
+
+        public void MoveOffScreenObjects(float x, float y)
+        {
+            foreach(Block b in blocks)
+            {
+                if (!b.IsOffScreen()) continue;
+
+                b.Move(x, y);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

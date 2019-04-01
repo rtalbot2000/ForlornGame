@@ -51,7 +51,7 @@ namespace Forlorn
             {
                 this.rect = value;
             }
-        }
+        } 
 
         public Block(int id, int x, int y, Texture2D text)
         {
@@ -75,6 +75,17 @@ namespace Forlorn
                 default:
                     return Color.Transparent;
             }
+        }
+
+        public void Move(float x, float y)
+        {
+            rect.X = (int)(rect.X + x);
+            rect.Y = (int)(rect.Y + y);
+        }
+
+        public bool IsOffScreen()
+        {
+            return rect.X < 0 || rect.X > 1920 || rect.Y < 0 || rect.Y > 1080;
         }
 
         public void Draw(SpriteBatch spriteBatch)
