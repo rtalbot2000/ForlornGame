@@ -34,6 +34,8 @@ namespace Forlorn
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
+            sword = new Sword(Content.Load<Texture2D>("sword"), new Rectangle(200, 200, 10, 40));
             base.Initialize();
         }
 
@@ -48,7 +50,6 @@ namespace Forlorn
 
             // TODO: use this.Content to load your game content here
         }
-
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -83,7 +84,9 @@ namespace Forlorn
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(sword.swordTexture, sword.swordRect, Color.Gray);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
