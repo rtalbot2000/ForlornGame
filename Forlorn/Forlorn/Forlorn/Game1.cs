@@ -18,6 +18,7 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         Level level;
 
@@ -54,7 +55,8 @@ namespace Forlorn
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //Loads player
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
             testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
@@ -78,9 +80,12 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState kb = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                kb.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            //Updates controlled movements of player
+            player.update(kb);
             // TODO: Add your update logic here
             KeyboardState key = Keyboard.GetState();
 
@@ -97,6 +102,10 @@ namespace Forlorn
         {
             GraphicsDevice.Clear(new Color(147, 201, 227));
 
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
