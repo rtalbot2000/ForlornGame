@@ -21,14 +21,14 @@ namespace Forlorn
             get { return content; }
         }
         ContentManager content;
-        public LoadContent(IServiceProvider serviceProvider, string path)
-        {
-            content = new ContentManager(serviceProvider, "Content");
-            swordTexture = this.Content.Load<Texture2D>("sword");
-            testTexture = this.Content.Load<Texture2D>("white");
+        //public LoadContent(IServiceProvider serviceProvider, string path)
+        //{
+        //    content = new ContentManager(serviceProvider, "Content");
+        //    swordTexture = this.Content.Load<Texture2D>("sword");
+        //    testTexture = this.Content.Load<Texture2D>("white");
 
-            Load
-        }
+        //    Load
+        //}
         private void RectangleInterection(SpriteBatch spriteBatch)
         {
             Rectangle rectangle1 = new Rectangle(50, 50, 200, 100);
