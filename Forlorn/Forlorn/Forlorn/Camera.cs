@@ -48,9 +48,6 @@ namespace Forlorn
                 position.Y = 0;
             }
 
-            Console.WriteLine(ScreenWidth + " " + ScreenHeight);
-            Console.WriteLine(position.X + " " + position.Y);
-
             viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
         }
     }

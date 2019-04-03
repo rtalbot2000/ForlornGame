@@ -85,7 +85,10 @@ namespace Forlorn
 
         public bool IsOffScreen(Vector2 playerLocation)
         {
-            return false;
+            int xDiff = (int) Math.Abs(playerLocation.X - rect.X);
+            int yDiff = (int)Math.Abs(playerLocation.Y - rect.Y);
+
+            return xDiff > 1920 / 2 + 50 || yDiff > 1080 / 2;
         }
 
         public void Draw(SpriteBatch spriteBatch)

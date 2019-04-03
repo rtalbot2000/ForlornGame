@@ -44,6 +44,7 @@ namespace Forlorn
 
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             camera = new Camera();
@@ -111,7 +112,7 @@ namespace Forlorn
 
             spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
             
-            level.Draw(spriteBatch, gameTime);
+            level.Draw(player.Position, spriteBatch, gameTime);
 
             spriteBatch.End();
 

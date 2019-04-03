@@ -227,11 +227,11 @@ namespace Forlorn
             //blocksToAdd.Clear();
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach(Block b in blocks)
             {
-                
+                if (b.IsOffScreen(playerLocation)) continue;
                 b.Draw(spriteBatch);
             }
         }

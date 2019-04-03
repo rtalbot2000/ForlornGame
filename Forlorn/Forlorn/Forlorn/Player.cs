@@ -32,8 +32,8 @@ namespace Forlorn
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            body = new Rectangle(400 * 16, 160, 8, 24);
-            position = new Vector2(400 * 16, 160);
+            body = new Rectangle(400 * 16, 1080/2, 8, 24);
+            position = new Vector2(400 * 16, 1080 /2);
             initialY = body.Y;
         }
         //Returns texture of character
@@ -56,13 +56,13 @@ namespace Forlorn
             }
             if (kb.IsKeyDown(Keys.A))
             {
-                body.X -= 3;
-                position.X -= 3;
+                body.X -= 2;
+                position.X -= 2;
             }
             if (kb.IsKeyDown(Keys.D))
             {
-                body.X += 3;
-                position.X += 3;
+                body.X += 2;
+                position.X += 2;
             }
             if (isJumping)
             {
