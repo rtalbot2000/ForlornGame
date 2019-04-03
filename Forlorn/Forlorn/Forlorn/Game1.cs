@@ -35,7 +35,7 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
-            sword = new Sword(Content.Load<Texture2D>("sword"), new Rectangle(200, 200, 10, 40));
+            //sword = new Sword(Content.Load<Texture2D>("sword"), new Rectangle(200, 200, 10, 40));
             base.Initialize();
         }
 
@@ -85,7 +85,8 @@ namespace Forlorn
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(sword.swordTexture, sword.swordRect, Color.Gray);
+            //spriteBatch.Draw(sword.swordTexture, sword.swordRect, Color.Gray);
+            //sword.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

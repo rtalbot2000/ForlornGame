@@ -11,8 +11,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Forlorn
 {
-    public class Sword
+    class Sword : AnimatedSprite
     {
+        private string currentAnim = "Idle";
+        private SpriteEffects flip = SpriteEffects.None;
+
         public Texture2D swordTexture;
         public Rectangle swordRect = new Rectangle(50, 50, 50, 50);
         public ContentManager Content
@@ -21,10 +24,84 @@ namespace Forlorn
         }
         ContentManager content;
 
-        public Sword(Texture2D tex, Rectangle rect)
+        public Sword(IServiceProvider serviceProvider, string path)
         {
-            swordTexture = tex;
-            swordRect = rect;
+            content = new ContentManager(serviceProvider, "Content");
+            swordTexture = content.Load<Texture2D>("sword");
+            swordRect = new Rectangle(200, 200, 50, 50);
+        }
+
+        public void LoadContent()
+        {
+            SpriteTextures.Add(Content.Load<Texture2D>("player"));
+            Animation anim = new Animation();
+            anim.LoadAnimation("Idle", 0, new List<int>
+            {
+                0,
+                11,
+                0,
+                12
+            }, 7, true);
+            SpriteAnimations.Add("Idle", anim);
+            anim = new Animation();
+            anim.LoadAnimation("Walking", 0, new List<int>
+            {
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            }, 7, true);
+            SpriteAnimations.Add("Walking", anim);
+            anim = new Animation();
+            anim.LoadAnimation("Jump", 0, new List<int>
+            {
+                7,
+                8,
+                9,
+                10,
+                9,
+                8,
+                7
+            }, 20, false);
+            anim.AnimationCallBack(JumpAnimEnd);
+            SpriteAnimations.Add("Jump", anim);
+
+            anim = new Animation();
+            anim.LoadAnimation("Dead", 0, new List<int>
+            {
+            13,
+            14,
+            15
+            }, 6, false);
+            //anim.AnimationCallBack(DeadAnimEnd);
+            SpriteAnimations.Add("Dead", anim);
+        }
+        
+        public void Reset()
+        {
+            SpriteAnimations[currentAnim].Stop();
+            currentAnim = "Idle";
+            SpriteAnimations[currentAnim].ResetPlay();
+        }
+        public void JumpAnimEnd()
+        {
+            currentAnim = "Idle";
+            SpriteAnimations[currentAnim].Play();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            SpriteAnimations[currentAnim].Update(gameTime);
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            //Rectangle source = GetFrameRectangle(SpriteAnimations[currentAnim].FrameToDraw);
+            //spriteBatch.Draw(SpriteTextures[0], swordRect, source, Color.White);
+            spriteBatch.Draw(swordTexture, swordRect, Color.White);
         }
         public void Dispose()
         {
