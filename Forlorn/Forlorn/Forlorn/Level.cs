@@ -13,6 +13,8 @@ namespace Forlorn
     {
         private Block[,] blocks;
 
+        private List<Block> drawnBlocks;
+
         private Texture2D testPixel;
 
         public Level(Texture2D testPixel)
@@ -44,6 +46,10 @@ namespace Forlorn
             }
 
             GenerateCaves();
+
+            drawnBlocks = new List<Block>();
+
+            
         }
 
         public void GenerateCaves()
@@ -144,49 +150,88 @@ namespace Forlorn
         public void Update(KeyboardState key)
         {
             float x = 0, y = 0;
-            if(key.IsKeyDown(Keys.Down))
+            if (key.IsKeyDown(Keys.Down))
             {
                 y -= 5;
             }
-            if(key.IsKeyDown(Keys.Up))
+            if (key.IsKeyDown(Keys.Up))
             {
                 y += 5;
             }
-            if(key.IsKeyDown(Keys.Left))
+            if (key.IsKeyDown(Keys.Left))
             {
                 x += 5;
             }
-            if(key.IsKeyDown(Keys.Right))
+            if (key.IsKeyDown(Keys.Right))
             {
                 x -= 5;
             }
 
-            Thread t = new Thread(() => MoveOffScreenObjects(x, y));
-            //t.Start();
+            //List<Block> blocksToAdd = new List<Block>();
 
-            foreach(Block b in blocks)
-            {
-                if (b.IsOffScreen())
-                    continue;
+            //for (int i = 0; i < drawnBlocks.Count; i++)
+            //{
+            //    Block b = drawnBlocks[i];
+            //    if (b.IsOffScreen())
+            //        continue;
 
-                b.Move(x, y);
-            }
-        }
+            //    b.Move(x, y);
+            //    if (b.IsOffScreen())
+            //    {
+            //        if (b.Rectangle.X < 0)
+            //        {
+            //            int locX = (int)b.Location.X;
+            //            locX += 130;
+            //            if (locX < blocks.GetLength(1))
+            //            {
+            //                blocksToAdd.Add(blocks[locX, (int)b.Location.Y]);
+            //            }
+            //        }
+            //        if (b.Rectangle.X > 1920)
+            //        {
+            //            int locX = (int)b.Location.X;
+            //            locX -= 130;
+            //            if (locX > 0)
+            //            {
+            //                drawnBlocks.Add(blocks[locX, (int)b.Location.Y]);
+            //            }
+            //        }
+            //        if (b.Rectangle.Y < 0)
+            //        {
+            //            int locY = (int)b.Location.Y;
+            //            locY += 68;
+            //            if (locY < blocks.GetLength(0))
+            //            {
+            //                drawnBlocks.Add(blocks[(int)b.Location.X, locY]);
+            //            }
+            //        }
+            //        if (b.Rectangle.Y > 1080)
+            //        {
+            //            int locY = (int)b.Location.Y;
+            //            locY -= 68;
+            //            if (locY > 0)
+            //            {
+            //                drawnBlocks.Add(blocks[(int)b.Location.X, locY]);
+            //            }
+            //        }
+            //        i--;
+            //        continue;
+            //    }
+            //}
+            //foreach (Block b in blocksToAdd)
+            //{
+            //    drawnBlocks.Add(b);
 
-        public void MoveOffScreenObjects(float x, float y)
-        {
-            foreach(Block b in blocks)
-            {
-                if (!b.IsOffScreen()) continue;
+            //}
 
-                b.Move(x, y);
-            }
+            //blocksToAdd.Clear();
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach(Block b in blocks)
             {
+                
                 b.Draw(spriteBatch);
             }
         }

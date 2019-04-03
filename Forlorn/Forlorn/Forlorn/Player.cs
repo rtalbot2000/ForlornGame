@@ -18,11 +18,22 @@ namespace Forlorn
         bool isFalling = false;
         int initialY;
         int remnantY;
+        Vector2 position;
+
+        public Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+        }
+
         //Creates player dude
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            body = new Rectangle(x, y, 8, 24);
+            body = new Rectangle(400 * 16, 160, 8, 24);
+            position = new Vector2(400 * 16, 160);
             initialY = body.Y;
         }
         //Returns texture of character
@@ -44,9 +55,15 @@ namespace Forlorn
                     isJumping = true;
             }
             if (kb.IsKeyDown(Keys.A))
-                body.X--;
+            {
+                body.X -= 3;
+                position.X -= 3;
+            }
             if (kb.IsKeyDown(Keys.D))
-                body.X++;
+            {
+                body.X += 3;
+                position.X += 3;
+            }
             if (isJumping)
             {
                 timer++;

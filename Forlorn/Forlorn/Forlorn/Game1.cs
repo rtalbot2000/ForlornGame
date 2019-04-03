@@ -24,6 +24,8 @@ namespace Forlorn
 
         Texture2D testPixel;
 
+        Camera camera;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,6 +45,8 @@ namespace Forlorn
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.ApplyChanges();
+
+            camera = new Camera();
 
             base.Initialize();
         }
@@ -87,9 +91,10 @@ namespace Forlorn
             //Updates controlled movements of player
             player.update(kb);
             // TODO: Add your update logic here
-            KeyboardState key = Keyboard.GetState();
 
-            level.Update(key);
+            level.Update(kb);
+
+            camera.Update(player.Position);
 
             base.Update(gameTime);
         }
@@ -102,14 +107,10 @@ namespace Forlorn
         {
             GraphicsDevice.Clear(new Color(147, 201, 227));
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
+
             spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
-            spriteBatch.End();
-            // TODO: Add your drawing code here
-
-            spriteBatch.Begin();
-
+            
             level.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();

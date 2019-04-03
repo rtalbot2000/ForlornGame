@@ -57,7 +57,7 @@ namespace Forlorn
         {
             this.id = id;
             this.location = new Vector2(x, y);
-            this.rect = new Rectangle((400 - x) * 16, (y - 550) * 16, 16, 16);
+            this.rect = new Rectangle((x) * 16, (y - 550) * 16, 16, 16);
             //this.rect = new Rectangle((400 - x) * 3, (y - 550) * 3, 3, 3);
             this.texture = text;
         }
@@ -83,14 +83,13 @@ namespace Forlorn
             rect.Y = (int)(rect.Y + y);
         }
 
-        public bool IsOffScreen()
+        public bool IsOffScreen(Vector2 playerLocation)
         {
-            return rect.X < 0 || rect.X > 1920 || rect.Y < 0 || rect.Y > 1080;
+            return false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (IsOffScreen()) return;
             
             spriteBatch.Draw(texture, rect, GetColor());
         }
