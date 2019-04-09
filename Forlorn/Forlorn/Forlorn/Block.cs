@@ -82,7 +82,7 @@ namespace Forlorn
             int xDiff = (int) Math.Abs(playerLocation.X - rect.X);
             int yDiff = (int)Math.Abs(playerLocation.Y - rect.Y);
 
-            return xDiff > 1920 / 2 || yDiff > 1080 / 2;
+            return xDiff > 1920 * 4 / 7 + 100 || yDiff > 1080 * 4 / 7;
         }
 
         public void Draw(SpriteBatch spriteBatch)
