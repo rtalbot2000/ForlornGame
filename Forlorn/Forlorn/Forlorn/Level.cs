@@ -49,7 +49,13 @@ namespace Forlorn
 
             drawnBlocks = new List<Block>();
 
-            
+            foreach(Block b in blocks)
+            {
+                if (!b.IsOffScreen(new Vector2(400 * 16, 1080 / 2)))
+                {
+                    drawnBlocks.Add(b);
+                }
+            }
         }
 
         public void GenerateCaves()
@@ -147,91 +153,33 @@ namespace Forlorn
             }
         }
 
-        public void Update(KeyboardState key)
+        public void Update(Player p)
         {
-            float x = 0, y = 0;
-            if (key.IsKeyDown(Keys.Down))
+            int pX = (int)p.Position.X;
+            int pY = (int)p.Position.Y;
+            for (int y = -1080 / 2; y <= 1080/2; y += 16)
             {
-                y -= 5;
+                for(int x = -1920 / 2; x <= 1920/2; x+= 16) {
+                    Console.WriteLine((pX + x) + " " + (pY + y));
+                    if(pX + x < 0 || pX + x > 1920 ||
+                        pY + y < 0 || pY + y > 1080)
+                    {
+                        continue;
+                    }
+
+                    Block b = blocks[(y + pY) / 16, (x + pX) / 16];
+
+                    Console.WriteLine(b.Rectangle.X + " " + b.Rectangle.Y);
+
+                    drawnBlocks.Add(b);
+                }
             }
-            if (key.IsKeyDown(Keys.Up))
-            {
-                y += 5;
-            }
-            if (key.IsKeyDown(Keys.Left))
-            {
-                x += 5;
-            }
-            if (key.IsKeyDown(Keys.Right))
-            {
-                x -= 5;
-            }
-
-            //List<Block> blocksToAdd = new List<Block>();
-
-            //for (int i = 0; i < drawnBlocks.Count; i++)
-            //{
-            //    Block b = drawnBlocks[i];
-            //    if (b.IsOffScreen())
-            //        continue;
-
-            //    b.Move(x, y);
-            //    if (b.IsOffScreen())
-            //    {
-            //        if (b.Rectangle.X < 0)
-            //        {
-            //            int locX = (int)b.Location.X;
-            //            locX += 130;
-            //            if (locX < blocks.GetLength(1))
-            //            {
-            //                blocksToAdd.Add(blocks[locX, (int)b.Location.Y]);
-            //            }
-            //        }
-            //        if (b.Rectangle.X > 1920)
-            //        {
-            //            int locX = (int)b.Location.X;
-            //            locX -= 130;
-            //            if (locX > 0)
-            //            {
-            //                drawnBlocks.Add(blocks[locX, (int)b.Location.Y]);
-            //            }
-            //        }
-            //        if (b.Rectangle.Y < 0)
-            //        {
-            //            int locY = (int)b.Location.Y;
-            //            locY += 68;
-            //            if (locY < blocks.GetLength(0))
-            //            {
-            //                drawnBlocks.Add(blocks[(int)b.Location.X, locY]);
-            //            }
-            //        }
-            //        if (b.Rectangle.Y > 1080)
-            //        {
-            //            int locY = (int)b.Location.Y;
-            //            locY -= 68;
-            //            if (locY > 0)
-            //            {
-            //                drawnBlocks.Add(blocks[(int)b.Location.X, locY]);
-            //            }
-            //        }
-            //        i--;
-            //        continue;
-            //    }
-            //}
-            //foreach (Block b in blocksToAdd)
-            //{
-            //    drawnBlocks.Add(b);
-
-            //}
-
-            //blocksToAdd.Clear();
         }
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            foreach(Block b in blocks)
+            foreach(Block b in drawnBlocks)
             {
-                if (b.IsOffScreen(playerLocation)) continue;
                 b.Draw(spriteBatch);
             }
         }

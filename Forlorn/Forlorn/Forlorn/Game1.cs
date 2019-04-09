@@ -44,7 +44,6 @@ namespace Forlorn
 
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             camera = new Camera();
@@ -93,7 +92,7 @@ namespace Forlorn
             player.update(kb);
             // TODO: Add your update logic here
 
-            level.Update(kb);
+            level.Update(player);
 
             camera.Update(player.Position);
 

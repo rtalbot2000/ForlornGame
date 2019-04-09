@@ -77,23 +77,16 @@ namespace Forlorn
             }
         }
 
-        public void Move(float x, float y)
-        {
-            rect.X = (int)(rect.X + x);
-            rect.Y = (int)(rect.Y + y);
-        }
-
         public bool IsOffScreen(Vector2 playerLocation)
         {
             int xDiff = (int) Math.Abs(playerLocation.X - rect.X);
             int yDiff = (int)Math.Abs(playerLocation.Y - rect.Y);
 
-            return xDiff > 1920 / 2 + 50 || yDiff > 1080 / 2;
+            return xDiff > 1920 / 2 || yDiff > 1080 / 2;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            
             spriteBatch.Draw(texture, rect, GetColor());
         }
     }
