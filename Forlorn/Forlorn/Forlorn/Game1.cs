@@ -18,6 +18,7 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        MouseState oldMouse;
         private Sword sword;
         public Game1()
         {
@@ -35,7 +36,7 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
-            //sword = new Sword(Content.Load<Texture2D>("sword"), new Rectangle(200, 200, 10, 40));
+            oldMouse = Mouse.GetState();
             base.Initialize();
         }
 
@@ -49,6 +50,8 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            sword = new Sword(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content);
+
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -71,7 +74,11 @@ namespace Forlorn
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            MouseState mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released)
+            {
+                sword.degrees += 10;
+            }
             base.Update(gameTime);
         }
 
@@ -85,8 +92,8 @@ namespace Forlorn
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            //spriteBatch.Draw(sword.swordTexture, sword.swordRect, Color.Gray);
-            //sword.Draw(gameTime, spriteBatch);
+            //spriteBatch.Draw(sword.getTexture(), sword.getRect(), null, Color.Gray, radians, spot,);
+            sword.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
