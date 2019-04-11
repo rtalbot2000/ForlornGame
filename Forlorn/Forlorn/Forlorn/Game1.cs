@@ -19,6 +19,7 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         MouseState oldMouse;
+        private int timer;
         private Sword sword;
         public Game1()
         {
@@ -36,6 +37,7 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
+            timer = 0;
             oldMouse = Mouse.GetState();
             base.Initialize();
         }
@@ -75,10 +77,13 @@ namespace Forlorn
 
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released)
-            {
-                sword.degrees += 10;
-            }
+            //double swingVelocity = 10 + 0.5d * timer;
+            //if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton != ButtonState.Pressed)
+            //{
+            //    sword.degrees += 70;
+            //}
+            sword.Update();
+            oldMouse = mouse;
             base.Update(gameTime);
         }
 
@@ -92,7 +97,6 @@ namespace Forlorn
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            //spriteBatch.Draw(sword.getTexture(), sword.getRect(), null, Color.Gray, radians, spot,);
             sword.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

@@ -16,13 +16,10 @@ namespace Forlorn
         public Texture2D swordTexture;
         public Rectangle swordRect;
         public int degrees;
+        bool isSwinging = false;
+        private int timer = 0;
         Vector2 spot;
         MouseState oldMouse = Mouse.GetState();
-        public ContentManager Content
-        {
-            get { return content; }
-        }
-        ContentManager content;
 
         public Sword(int x, int y, int degrees_, ContentManager content)
         {
@@ -31,13 +28,32 @@ namespace Forlorn
             degrees = degrees_;
         }
 
-        public void Update(MouseState mouse)
+        public void Update()
         {
-            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released);
+            MouseState mouse = Mouse.GetState();
+ 
+            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton != ButtonState.Pressed)
             {
-                degrees += 20;
+                if (!isSwinging)
+                {
+                    isSwinging = true;
+                }
             }
 
+            if(isSwinging == true)
+            {
+                timer++;
+                if (timer < 40)
+                {
+                    double swingvelocity = 15 + -0.75d * timer;
+                    degrees += (int)swingvelocity;
+                }
+                else
+                {
+                    isSwinging = false;
+                    timer = 0;
+                }
+            }
             oldMouse = mouse;
         }
 
