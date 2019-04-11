@@ -64,7 +64,7 @@ namespace Forlorn
             // TODO: use this.Content to load your game content here
             testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
-            this.level = new Level(testPixel);
+            this.level = new Level(testPixel, player);
         }
 
         /// <summary>
