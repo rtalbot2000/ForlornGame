@@ -119,6 +119,8 @@ namespace Forlorn
             
             level.Draw(player.Position, spriteBatch, gameTime);
 
+            for (int i = 0; i < bats.Length; i++)
+                spriteBatch.Draw(bats[i].getTexture(), bats[i].getRect(), Color.WhiteSmoke);
             spriteBatch.End();
 
             base.Draw(gameTime);

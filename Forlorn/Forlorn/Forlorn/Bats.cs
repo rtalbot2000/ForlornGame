@@ -40,6 +40,14 @@ namespace Forlorn
             swoop = false;
             flyAround = false;
         }
+        public Texture2D getTexture()
+        {
+            return batText;
+        }
+        public Rectangle getRect()
+        {
+            return batRect;
+        }
         public void batUpdate(KeyboardState kb)
         {
             if (spawned)
