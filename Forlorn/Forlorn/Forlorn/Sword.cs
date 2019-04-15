@@ -16,16 +16,35 @@ namespace Forlorn
         public Texture2D swordTexture;
         public Rectangle swordRect;
         public int degrees;
+        public int swordType;
         bool isSwinging = false;
         private int timer = 0;
         Vector2 spot;
         MouseState oldMouse = Mouse.GetState();
 
-        public Sword(int x, int y, int degrees_, ContentManager content)
+        public Sword(int x, int y, int degrees_, ContentManager content, int swordType_)
         {
-            this.swordTexture = content.Load<Texture2D>("Sword/sword");
-            swordRect = new Rectangle(x, y, 10, 50);
+            switch (swordType_)
+            {
+                case 0:
+                    this.swordTexture = content.Load<Texture2D>("Tools/wood axe"); //wood
+                    break;
+                case 1:
+                    this.swordTexture = content.Load<Texture2D>("Tools/steel axe"); //iron
+                    break;
+                case 2:
+                    this.swordTexture = content.Load<Texture2D>("Tools/axe"); //gold
+                    break;
+                case 3:
+                    this.swordTexture = content.Load<Texture2D>("Tools/axe"); //platinum
+                    break;
+                case 4:
+                    this.swordTexture = content.Load<Texture2D>("Tools/crystal pickaxe"); //crystal
+                    break;
+            }
+            swordRect = new Rectangle(x, y, 30, 30);
             degrees = degrees_;
+            swordType = swordType_;
         }
 
         public void Update()
@@ -60,7 +79,7 @@ namespace Forlorn
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float radians = MathHelper.ToRadians(degrees);
-            spot = new Vector2(swordRect.Width / 2, swordRect.Bottom / 2);
+            spot = new Vector2(0, swordTexture.Height);
             
             spriteBatch.Draw(swordTexture, swordRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
         }
