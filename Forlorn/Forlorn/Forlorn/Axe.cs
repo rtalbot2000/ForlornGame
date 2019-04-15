@@ -11,27 +11,27 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Forlorn
 {
-    class Sword
+    class Axe
     {
-        public Texture2D swordTexture;
-        public Rectangle swordRect;
+        public Texture2D axeTexture;
+        public Rectangle axeRect;
         public int degrees;
         bool isSwinging = false;
         private int timer = 0;
         Vector2 spot;
         MouseState oldMouse = Mouse.GetState();
 
-        public Sword(int x, int y, int degrees_, ContentManager content)
+        public Axe(int x, int y, int degrees_, ContentManager content)
         {
-            this.swordTexture = content.Load<Texture2D>("Sword/sword");
-            swordRect = new Rectangle(x, y, 10, 50);
+            this.axeTexture = content.Load<Texture2D>("Tools/sword");
+            axeRect = new Rectangle(x, y, 10, 50);
             degrees = degrees_;
         }
 
         public void Update()
         {
             MouseState mouse = Mouse.GetState();
- 
+
             if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton != ButtonState.Pressed)
             {
                 if (!isSwinging)
@@ -40,12 +40,12 @@ namespace Forlorn
                 }
             }
 
-            if(isSwinging == true)
+            if (isSwinging == true)
             {
                 timer++;
                 if (timer < 40)
                 {
-                    double swingvelocity = 15 + -0.75d * timer;
+                    double swingvelocity = 10 + -0.50d * timer;
                     degrees += (int)swingvelocity;
                 }
                 else
@@ -60,18 +60,18 @@ namespace Forlorn
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float radians = MathHelper.ToRadians(degrees);
-            spot = new Vector2(swordRect.Width / 2, swordRect.Bottom / 2);
-            
-            spriteBatch.Draw(swordTexture, swordRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
+            spot = new Vector2(axeRect.Width / 2, axeRect.Bottom / 2);
+
+            spriteBatch.Draw(axeTexture, axeRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
         }
 
         public Texture2D getTexture()
         {
-            return swordTexture;
+            return axeTexture;
         }
         public Rectangle getRect()
         {
-            return swordRect;
+            return axeRect;
         }
 
     }

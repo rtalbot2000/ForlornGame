@@ -20,7 +20,7 @@ namespace Forlorn
         SpriteBatch spriteBatch;
         MouseState oldMouse;
         private int timer;
-        private Sword sword;
+        private Axe axe;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -52,7 +52,7 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            sword = new Sword(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content);
+            axe = new Axe(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content);
 
         }
         /// <summary>
@@ -77,12 +77,7 @@ namespace Forlorn
 
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
-            //double swingVelocity = 10 + 0.5d * timer;
-            //if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton != ButtonState.Pressed)
-            //{
-            //    sword.degrees += 70;
-            //}
-            sword.Update();
+            axe.Update();
             oldMouse = mouse;
             base.Update(gameTime);
         }
@@ -97,7 +92,7 @@ namespace Forlorn
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            sword.Draw(gameTime, spriteBatch);
+            axe.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
