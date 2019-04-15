@@ -17,15 +17,11 @@ namespace Forlorn
 
         private Texture2D testPixel;
 
-        private int loadTimer;
-
         public Level(Texture2D testPixel)
         {
             blocks = new Block[800, 800];
 
             this.testPixel = testPixel;
-
-            this.loadTimer = 0;
 
             GenerateLevel();
         }
@@ -159,32 +155,24 @@ namespace Forlorn
 
         public void Update(Player p)
         {
-            Console.WriteLine(p.Position);
-            loadTimer++;
-            if (loadTimer > 180)
+            int pX = (int)p.Position.X;
+            int pY = (int)p.Position.Y;
+            for (int y = -1080 / 2; y <= 1080/2; y += 16)
             {
-                loadTimer = 0;
-
-                foreach (Block b in blocks)
-                {
-                    if (b.IsOffScreen(p.Position))
+                for(int x = -1920 / 2; x <= 1920/2; x+= 16) {
+                    Console.WriteLine((pX + x) + " " + (pY + y));
+                    if(pX + x < 0 || pX + x > 1920 ||
+                        pY + y < 0 || pY + y > 1080)
                     {
-                        if(drawnBlocks.Contains(b))
-                        {
-                            drawnBlocks.Remove(b);
-                        }
                         continue;
                     }
+
+                    Block b = blocks[(y + pY) / 16, (x + pX) / 16];
+
+                    Console.WriteLine(b.Rectangle.X + " " + b.Rectangle.Y);
+
                     drawnBlocks.Add(b);
                 }
-            }
-
-            int px = (int)p.Position.X;
-            int py = (int)p.Position.Y;
-
-            for(int y = 1080 / 2 - 1080; y <= 1080 / 4; y++)
-            {
-
             }
         }
 
@@ -192,7 +180,6 @@ namespace Forlorn
         {
             foreach(Block b in drawnBlocks)
             {
-                if (b.IsOffScreen(playerLocation)) continue;
                 b.Draw(spriteBatch);
             }
         }
