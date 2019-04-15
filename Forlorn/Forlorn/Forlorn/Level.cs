@@ -160,7 +160,6 @@ namespace Forlorn
             for (int y = -1080 / 2; y <= 1080/2; y += 16)
             {
                 for(int x = -1920 / 2; x <= 1920/2; x+= 16) {
-                    Console.WriteLine((pX + x) + " " + (pY + y));
                     if(pX + x < 0 || pX + x > 1920 ||
                         pY + y < 0 || pY + y > 1080)
                     {
@@ -168,8 +167,6 @@ namespace Forlorn
                     }
 
                     Block b = blocks[(y + pY) / 16, (x + pX) / 16];
-
-                    Console.WriteLine(b.Rectangle.X + " " + b.Rectangle.Y);
 
                     drawnBlocks.Add(b);
                 }
