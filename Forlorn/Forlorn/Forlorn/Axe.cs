@@ -45,7 +45,7 @@ namespace Forlorn
                 timer++;
                 if (timer < 40)
                 {
-                    double swingvelocity = 10 + -0.50d * timer;
+                    double swingvelocity = 6 + -0.30d * timer;
                     degrees += (int)swingvelocity;
                 }
                 else
