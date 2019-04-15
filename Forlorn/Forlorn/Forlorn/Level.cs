@@ -13,7 +13,7 @@ namespace Forlorn
     {
         private Block[,] blocks;
 
-        private List<Block> drawnBlocks;
+        volatile private List<Block> drawnBlocks;
         private List<Vector2> drawnVectors;
 
         private Texture2D testPixel;
@@ -23,6 +23,8 @@ namespace Forlorn
         private bool isDrawing;
 
         private Thread renderThread;
+
+        private Player player;
 
         public Level(Texture2D testPixel, Player p)
         {
@@ -34,7 +36,7 @@ namespace Forlorn
 
             isDrawing = false;
 
-            renderThread = new Thread(() => RenderLevel(p));
+            this.player = p;
 
             GenerateLevel();
         }
@@ -71,6 +73,9 @@ namespace Forlorn
                     drawnVectors.Add(b.Location);
                 }
             }
+
+            renderThread = new Thread(() => RenderLevel(player));
+            renderThread.Start();
         }
 
         public void GenerateCaves()
@@ -170,37 +175,39 @@ namespace Forlorn
 
         public void Update(Player p)
         {
-            renderThread.Start();
+            
         }
 
         public void RenderLevel(Player p)
         {
-            if (p.Movement.X < 0)
+            while(true)
             {
-               for (int xOffset = -6; xOffset < 0; xOffset++)
-               {
-                   for (int yOffset = -38; yOffset <= 38; yOffset++)
-                   {
-                    int x = (int)p.GetBlockLocation().X - 60 + xOffset;
-                        int y = 650 - (int)p.GetBlockLocation().Y + yOffset;
-
-                        if (x < 0 || x > blocks.GetLength(0) - 1 ||
-                            y < 0 || y > blocks.GetLength(1) - 1 ||
-                        drawnVectors.Contains(new Vector2(x, y)))
-                            continue;
-
-                        Block b = blocks[y, x];
-
-                        while(isDrawing)
+                lock(drawnBlocks)
+                {
+                    if (p.Movement.X < 0)
+                    {
+                        for (int xOffset = -6; xOffset < 0; xOffset++)
                         {
-                            Thread.Sleep(1);
-                        }
+                            for (int yOffset = -38; yOffset <= 38; yOffset++)
+                            {
+                                int x = (int)p.GetBlockLocation().X - 60 + xOffset;
+                                int y = 650 - (int)p.GetBlockLocation().Y + yOffset;
 
-                        if (!drawnBlocks.Contains(b))
-                        {
-                            drawnBlocks.Add(b);
-                            drawnVectors.Add(b.Location);
+                                if (x < 0 || x > blocks.GetLength(0) - 1 ||
+                                    y < 0 || y > blocks.GetLength(1) - 1 ||
+                                drawnVectors.Contains(new Vector2(x, y)))
+                                    continue;
+
+                                Block b = blocks[y, x];
+
+                                if (!drawnBlocks.Contains(b))
+                                {
+                                    drawnBlocks.Add(b);
+                                    drawnVectors.Add(b.Location);
+                                }
+                            }
                         }
+                        Thread.Sleep(750);
                     }
                 }
             }
@@ -209,9 +216,13 @@ namespace Forlorn
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
             isDrawing = true;
-            foreach(Block b in drawnBlocks)
+
+            lock(drawnBlocks)
             {
-                b.Draw(spriteBatch);
+                foreach (Block b in drawnBlocks)
+                {
+                    b.Draw(spriteBatch);
+                }
             }
             isDrawing = false;
         }
