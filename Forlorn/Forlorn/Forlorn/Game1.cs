@@ -44,7 +44,6 @@ namespace Forlorn
 
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             camera = new Camera();
@@ -67,7 +66,7 @@ namespace Forlorn
             // TODO: use this.Content to load your game content here
             testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
-            this.level = new Level(testPixel);
+            this.level = new Level(testPixel, player);
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace Forlorn
                 bats[i].batUpdate(kb);
             // TODO: Add your update logic here
 
-            level.Update(kb);
+            level.Update(player);
 
             camera.Update(player.Position);
 

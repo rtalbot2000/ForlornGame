@@ -21,12 +21,21 @@ namespace Forlorn
         bool dead;
         double healthRemaining;
         Vector2 position;
+        Vector2 movement;
 
         public Vector2 Position
         {
             get
             {
                 return position;
+            }
+        }
+
+        public Vector2 Movement
+        {
+            get
+            {
+                return movement;
             }
         }
 
@@ -50,6 +59,13 @@ namespace Forlorn
         {
             return body;
         }
+
+        public Vector2 GetBlockLocation()
+        {
+            return new Vector2((float) Math.Floor(position.X / 16), 
+                (float) Math.Floor(position.Y / 16));
+        }
+
         public void update(KeyboardState kb)
         {
             remnantY = body.Y;
@@ -62,11 +78,12 @@ namespace Forlorn
             {
                 body.X -= 2;
                 position.X -= 2;
-            }
-            if (kb.IsKeyDown(Keys.D))
+                movement.X = -2;
+            } else if (kb.IsKeyDown(Keys.D))
             {
                 body.X += 2;
                 position.X += 2;
+                movement.X = 2;
             }
             if (isJumping)
             {
