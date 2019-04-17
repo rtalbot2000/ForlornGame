@@ -65,14 +65,5 @@ namespace Forlorn
             spriteBatch.Draw(axeTexture, axeRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
         }
 
-        public Texture2D getTexture()
-        {
-            return axeTexture;
-        }
-        public Rectangle getRect()
-        {
-            return axeRect;
-        }
-
     }
 }
