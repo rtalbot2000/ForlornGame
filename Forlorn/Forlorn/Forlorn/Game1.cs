@@ -50,7 +50,7 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            sword = new Sword(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content, 0);
+            sword = new Sword(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content, 2);
 
         }
         /// <summary>

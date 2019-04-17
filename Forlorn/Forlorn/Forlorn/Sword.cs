@@ -33,7 +33,7 @@ namespace Forlorn
                     this.swordTexture = content.Load<Texture2D>("Tools/steel axe"); //iron
                     break;
                 case 2:
-                    this.swordTexture = content.Load<Texture2D>("Tools/axe"); //gold
+                    this.swordTexture = content.Load<Texture2D>("Tools/gold pickaxe"); //gold
                     break;
                 case 3:
                     this.swordTexture = content.Load<Texture2D>("Tools/axe"); //platinum
@@ -62,9 +62,9 @@ namespace Forlorn
             if(isSwinging == true)
             {
                 timer++;
-                if (timer < 40)
+                if (timer < 20)
                 {
-                    double swingvelocity = 10 + -0.50d * timer;
+                    double swingvelocity = 20 + -2d * timer;
                     degrees += (int)swingvelocity;
                 }
                 else
@@ -82,15 +82,6 @@ namespace Forlorn
             spot = new Vector2(0, swordTexture.Height);
             
             spriteBatch.Draw(swordTexture, swordRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
-        }
-
-        public Texture2D getTexture()
-        {
-            return swordTexture;
-        }
-        public Rectangle getRect()
-        {
-            return swordRect;
         }
 
     }
