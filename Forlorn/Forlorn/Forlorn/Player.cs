@@ -41,8 +41,8 @@ namespace Forlorn
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            body = new Rectangle(400 * 16, 1080/2, 8, 24);
-            position = new Vector2(400 * 16, 1080 /2);
+            body = new Rectangle(12800, 1600, 8, 24);
+            position = new Vector2(body.X, body.Y);
             initialY = body.Y;
         }
         //Returns texture of character

@@ -42,11 +42,11 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
 
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 16 * 100;
+            graphics.PreferredBackBufferHeight = 16 * 60;
             graphics.ApplyChanges();
 
-            camera = new Camera();
+            camera = new Camera(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             base.Initialize();
         }

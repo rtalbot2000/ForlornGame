@@ -10,6 +10,8 @@ namespace Forlorn
     {
         Vector2 position;
         private Matrix viewMatrix;
+        private int width;
+        private int height;
 
         public Matrix ViewMatrix
         {
@@ -23,7 +25,7 @@ namespace Forlorn
         {
             get
             {
-                return 1920;
+                return width;
             }
         }
 
@@ -31,9 +33,16 @@ namespace Forlorn
         {
             get
             {
-                return 1080;
+                return height;
             }
         }
+
+        public Camera(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
         public void Update(Vector2 playerPosition)
         {
             position.X = playerPosition.X - (ScreenWidth / 2);
