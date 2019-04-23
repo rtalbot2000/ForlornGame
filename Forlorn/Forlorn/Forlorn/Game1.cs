@@ -19,7 +19,7 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-
+        Bats[] bats = new Bats[10];
         Level level;
 
         Texture2D testPixel;
@@ -61,6 +61,8 @@ namespace Forlorn
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Loads player
             player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
+            for(int i = 0; i < bats.Length; i++)
+                bats[i] = new Bats(this.Content, player.Position);
             // TODO: use this.Content to load your game content here
             testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
@@ -90,6 +92,8 @@ namespace Forlorn
                 this.Exit();
             //Updates controlled movements of player
             player.update(kb);
+            for (int i = 0; i < bats.Length; i++)
+                bats[i].batUpdate(kb);
             // TODO: Add your update logic here
 
             level.Update(player);
@@ -109,10 +113,13 @@ namespace Forlorn
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
 
-            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            if(!player.isDead())
+                spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
             
             level.Draw(player.Position, spriteBatch, gameTime);
 
+            for (int i = 0; i < bats.Length; i++)
+                spriteBatch.Draw(bats[i].getTexture(), bats[i].getRect(), Color.WhiteSmoke);
             spriteBatch.End();
 
             base.Draw(gameTime);

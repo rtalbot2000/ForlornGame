@@ -18,6 +18,8 @@ namespace Forlorn
         bool isFalling = false;
         int initialY;
         int remnantY;
+        bool dead;
+        double healthRemaining;
         Vector2 position;
         Vector2 movement;
 
@@ -44,6 +46,8 @@ namespace Forlorn
             body = new Rectangle(12800, 1600, 8, 24);
             position = new Vector2(body.X, body.Y);
             initialY = body.Y;
+            dead = false;
+            healthRemaining = 100d;
         }
         //Returns texture of character
         public Texture2D getTexture()
@@ -92,6 +96,16 @@ namespace Forlorn
                     isJumping = false;
                 }
             }
+        }
+        public void setHealth(double hit)
+        {
+            healthRemaining -= hit;
+            if (healthRemaining <= 0)
+                dead = true;
+        }
+        public Boolean isDead()
+        {
+            return dead;
         }
     }
 }
