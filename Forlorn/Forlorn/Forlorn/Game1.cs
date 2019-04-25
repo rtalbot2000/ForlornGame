@@ -18,6 +18,7 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         Bats[] allBats = new Bats[10];
         public Game1()
@@ -49,7 +50,8 @@ namespace Forlorn
                 allBats[i] = new Bats(this.Content, );
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //Loads player
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -70,11 +72,13 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState kb = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                kb.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            //Updates controlled movements of player
+            player.update(kb);
             // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -85,7 +89,9 @@ namespace Forlorn
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
