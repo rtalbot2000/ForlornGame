@@ -19,6 +19,7 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Bats[] allBats = new Bats[10];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,7 +35,6 @@ namespace Forlorn
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
