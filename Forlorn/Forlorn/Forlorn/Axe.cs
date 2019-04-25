@@ -16,16 +16,18 @@ namespace Forlorn
         public Texture2D axeTexture;
         public Rectangle axeRect;
         public int degrees;
+        public int swordType;
         bool isSwinging = false;
         private int timer = 0;
         Vector2 spot;
         MouseState oldMouse = Mouse.GetState();
 
-        public Axe(int x, int y, int degrees_, ContentManager content)
+        public Sword(int x, int y, int degrees_, ContentManager content)
         {
-            this.axeTexture = content.Load<Texture2D>("Tools/sword");
-            axeRect = new Rectangle(x, y, 10, 50);
+            this.swordTexture = content.Load<Texture2D>("Sword/sword");
+            swordRect = new Rectangle(x, y, 10, 50);
             degrees = degrees_;
+            swordType = swordType_;
         }
 
         public void Update()
@@ -43,9 +45,9 @@ namespace Forlorn
             if (isSwinging == true)
             {
                 timer++;
-                if (timer < 40)
+                if (timer < 20)
                 {
-                    double swingvelocity = 6 + -0.30d * timer;
+                    double swingvelocity = 15 + -0.75d * timer;
                     degrees += (int)swingvelocity;
                 }
                 else
@@ -60,9 +62,18 @@ namespace Forlorn
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float radians = MathHelper.ToRadians(degrees);
-            spot = new Vector2(axeRect.Width / 2, axeRect.Bottom / 2);
+            spot = new Vector2(swordRect.Width / 2, swordRect.Bottom / 2);
+            
+            spriteBatch.Draw(swordTexture, swordRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
+        }
 
-            spriteBatch.Draw(axeTexture, axeRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
+        public Texture2D getTexture()
+        {
+            return swordTexture;
+        }
+        public Rectangle getRect()
+        {
+            return swordRect;
         }
 
     }
