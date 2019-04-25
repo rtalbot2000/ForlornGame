@@ -15,13 +15,19 @@ namespace Forlorn
         private Rectangle body;
         int timer = 0;
         bool isJumping = false;
+        Vector2 playerPosition;
         bool isFalling = false;
         int initialY;
         int remnantY;
+        public Vector2 getPosition()
+        {
+            return playerPosition;
+        }
         //Creates player dude
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
+            playerPosition = new Vector2(x, y);
             body = new Rectangle(x, y, 8, 24);
             initialY = body.Y;
         }

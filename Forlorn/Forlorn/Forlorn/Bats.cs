@@ -32,7 +32,8 @@ namespace Forlorn
         {
             batText = content.Load<Texture2D>("white");
             leftMostPoint = (int)position.X - 800;
-            batPosition = new Vector2(randomGen.Next(leftMostPoint + 1800), -10);
+            //batPosition = new Vector2(randomGen.Next(leftMostPoint + 1800), -10);
+            batPosition = new Vector2(200, -10);
             batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 30, 15);
             spawned = true;
             spawnTimer = 300;

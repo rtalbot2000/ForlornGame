@@ -24,6 +24,9 @@ namespace Forlorn
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -46,12 +49,12 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             for (int i = 0; i < allBats.Length; i++)
-                allBats[i] = new Bats(this.Content, );
+                allBats[i] = new Bats(this.Content, player.getPosition());
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Loads player
-            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -78,6 +81,8 @@ namespace Forlorn
                 this.Exit();
             //Updates controlled movements of player
             player.update(kb);
+            for (int i = 0; i < allBats.Length; i++)
+                allBats[i].batUpdate(kb);
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
@@ -90,6 +95,8 @@ namespace Forlorn
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            for (int i = 0; i < allBats.Length; i++)
+                spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.WhiteSmoke);
             spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
             spriteBatch.End();
             // TODO: Add your drawing code here
