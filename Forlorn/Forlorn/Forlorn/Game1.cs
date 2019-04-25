@@ -34,6 +34,7 @@ namespace Forlorn
         /// </summary>
         protected override void Initialize()
         {
+            
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -44,6 +45,8 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
+            for (int i = 0; i < allBats.Length; i++)
+                allBats[i] = new Bats(this.Content, );
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
