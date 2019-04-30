@@ -57,7 +57,7 @@ namespace Forlorn
         {
             this.id = id;
             this.location = new Vector2(x, y);
-            this.rect = new Rectangle((x) * 32, (y - 550) * 32, 32, 32);
+            this.rect = new Rectangle((x) * 16, (y) * 16, 16, 16);
             //this.rect = new Rectangle((400 - x) * 3, (y - 550) * 3, 3, 3);
             this.texture = text;
         }

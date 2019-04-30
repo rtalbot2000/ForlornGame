@@ -43,7 +43,7 @@ namespace Forlorn
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            body = new Rectangle(12800, 1600, 8, 24);
+            body = new Rectangle(6400, 9550, 8, 24);
             position = new Vector2(body.X, body.Y);
             initialY = body.Y;
             dead = false;
@@ -76,25 +76,36 @@ namespace Forlorn
             }
             if (kb.IsKeyDown(Keys.A))
             {
-                body.X -= 2;
-                position.X -= 2;
-                movement.X = -2;
+                if (body.X > 0)
+                {
+                    body.X -= 2;
+                    position.X -= 2;
+                    movement.X = -2;
+                }
             } else if (kb.IsKeyDown(Keys.D))
             {
-                body.X += 2;
-                position.X += 2;
-                movement.X = 2;
+                if (body.X + body.Width < 800 * 16)
+                {
+                    body.X += 2;
+                    position.X += 2;
+                    movement.X = 2;
+                }
             }
             if (isJumping)
             {
                 timer++;
                 double jumpVelocity = 10 + -0.5d * timer;
                 body.Y -= (int)jumpVelocity;
+                position.Y = body.Y;
                 if (body.Y >= initialY)
                 {
                     timer = 0;
                     isJumping = false;
                 }
+            }
+            if(kb.IsKeyDown(Keys.Space))
+            {
+                Console.WriteLine(GetBlockLocation());
             }
         }
         public void setHealth(double hit)

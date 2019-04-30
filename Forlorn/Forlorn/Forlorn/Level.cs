@@ -25,7 +25,9 @@ namespace Forlorn
 
         private Player player;
 
-        public Level(Texture2D testPixel, Player p)
+        private Camera camera;
+
+        public Level(Texture2D testPixel, Player p, Camera camera)
         {
             blocks = new Block[800, 800];
 
@@ -36,6 +38,8 @@ namespace Forlorn
             isDrawing = false;
 
             this.player = p;
+
+            this.camera = camera;
 
             GenerateLevel();
         }
@@ -59,13 +63,13 @@ namespace Forlorn
                 }
             }
 
-            //GenerateCaves();
+            GenerateCaves();
 
             drawnBlocks = new List<Block>();
 
             foreach (Block b in blocks)
             {
-                if (!b.IsOffScreen(new Vector2(400 * 16, 1080 / 2)))
+                if (!b.IsOffScreen(new Vector2(9600, 14370)))
                 {
                     drawnBlocks.Add(b);
                 }
@@ -172,65 +176,36 @@ namespace Forlorn
 
         public void Update(Player p)
         {
-            //int pX = (int)p.Position.X;
-            //int pY = (int)p.Position.Y;
-            //for (int y = -1080 / 2; y <= 1080 / 2; y += 16)
-            //{
-            //    for (int x = -1920 / 2; x <= 1920 / 2; x += 16)
-            //    {
-            //        if (pX + x < 0 || pX + x > 1920 ||
-            //            pY + y < 0 || pY + y > 1080)
-            //        {
-            //            continue;
-            //        }
-
-            //        Block b = blocks[(y + pY) / 16, (x + pX) / 16];
-
-            //        drawnBlocks.Add(b);
-            //    }
-            //}
-
-            Console.WriteLine("----------------------");
-            Console.WriteLine(player.Position);
-            Console.WriteLine("----------------------");
-
-            for(int y = 0; y < blocks.GetLength(0); y++)
-            {
-                if(blocks[y,0].ID != 0)
-                {
-                    Console.WriteLine(blocks[y, blocks.GetLength(1) / 2].Rectangle);
-                    break; 
-                }
-            }
-
-            RenderLevel(p);
-        }
-
-        public void RenderLevel(Player p)
-        {
-            loadTimer++;
-            if (loadTimer < 30) return;
-
-            loadTimer = 0;
-
-            if (p.Movement.X != 0)
-            {
-                int playerLocX = (int)player.GetBlockLocation().X;
-                int playerLocY = (int)player.GetBlockLocation().Y;
-                //for(int y = )
-                //{
-
-                //}
-            }
+            
         }
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            lock(drawnBlocks)
+            for(int yDiff = -50; yDiff <= 50; yDiff++)
             {
-                foreach (Block b in drawnBlocks)
+                for(int xDiff = -50; xDiff <= 50; xDiff++)
                 {
-                    b.Draw(spriteBatch);
+                    int x = (int) player.GetBlockLocation().X;
+                    int y = (int) player.GetBlockLocation().Y;
+
+                    if (x < 50)
+                        x = 50;
+
+                    if (x > 750)
+                        x = 750;
+
+                    if (y < 50)
+                        y = 50;
+
+                    if (y > 750)
+                        y = 750;
+
+                    x += xDiff;
+                    y += yDiff;
+
+                    if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
+
+                    blocks[y, x].Draw(spriteBatch);
                 }
             }
         }
