@@ -19,7 +19,7 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-
+        Random randomGen = new Random();
         Bats[] allBats = new Bats[10];
         public Game1()
         {
@@ -51,7 +51,20 @@ namespace Forlorn
         {
             player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             for (int i = 0; i < allBats.Length; i++)
+            {
                 allBats[i] = new Bats(this.Content, player.getPosition());
+                allBats[i].setPosition(new Vector2(randomGen.Next(1000), 50));
+                int randomVel;
+                if (allBats[i].spawned)
+                {
+                    randomVel = (int)Math.Round((double)randomGen.Next(1));
+                    if (randomVel == 0)
+                        randomVel = -1 * randomGen.Next(10) + 2;
+                    else
+                        randomVel = randomGen.Next(10) + 2;
+                    allBats[i].setVelocity(randomVel);
+                }
+            }
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Loads player
