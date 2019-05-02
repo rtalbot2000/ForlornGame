@@ -53,15 +53,15 @@ namespace Forlorn
             for (int i = 0; i < allBats.Length; i++)
             {
                 allBats[i] = new Bats(this.Content, player.getPosition());
-                allBats[i].setPosition(new Vector2(randomGen.Next(1000), 50));
+                allBats[i].setPosition(new Vector2(randomGen.Next(4800), 50));
                 int randomVel;
                 if (allBats[i].spawned)
                 {
                     randomVel = (int)Math.Round((double)randomGen.Next(1));
-                    if (randomVel == 0)
-                        randomVel = -1 * randomGen.Next(10) + 2;
+                    if (randomVel == 0) 
+                        randomVel = -1 * randomGen.Next(10) + 5;
                     else
-                        randomVel = randomGen.Next(10) + 2;
+                        randomVel = randomGen.Next(10) + 5;
                     allBats[i].setVelocity(randomVel);
                 }
             }
@@ -95,7 +95,7 @@ namespace Forlorn
             //Updates controlled movements of player
             player.update(kb);
             for (int i = 0; i < allBats.Length; i++)
-                allBats[i].batUpdate(kb);
+                allBats[i].batUpdate(kb, player.getPosition());
             // TODO: Add your update logic here
             base.Update(gameTime);
         }

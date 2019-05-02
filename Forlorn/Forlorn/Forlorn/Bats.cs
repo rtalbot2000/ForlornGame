@@ -14,14 +14,16 @@ namespace Forlorn
         private Texture2D batText;
         private Rectangle batRect;
         Vector2 batPosition;
+        ContentManager content;
         Random randomGen = new Random();
         public Boolean spawned;
         int leftMostPoint;
         int randomVelocity = -5;
-        Boolean swoop;
-        Boolean flyAround;
         int flyTimer;
         int timer;
+        double fallVelocity;
+        Boolean swoop;
+        Boolean flyAround;
         public Vector2 Position
         {
             get
@@ -29,17 +31,23 @@ namespace Forlorn
                 return batPosition;
             }
         }
+        public void setTexture(ContentManager content, String name)
+        {
+            batText = content.Load<Texture2D>(name);
+        }
         public Bats(ContentManager content, Vector2 playerPosition)
         {
-            batText = content.Load<Texture2D>("white");
+            this.content = content;
+            batText = content.Load<Texture2D>("batOfficial.fw");
             leftMostPoint = (int)playerPosition.X - 450;
             batPosition = new Vector2(randomGen.Next(1000), 50);
-            batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 30, 15);
+            batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 60, 30);
             spawned = true;
             timer = (int)randomGen.Next(300);
             flyTimer = randomGen.Next(10) + 5;
+            fallVelocity = 10;
+            flyAround = true;
             swoop = false;
-            flyAround = false;
         }
         public Texture2D getTexture()
         {
@@ -61,10 +69,41 @@ namespace Forlorn
             spawned = false;
             
         }
-        public void batUpdate(KeyboardState kb)
+        public void batUpdate(KeyboardState kb, Vector2 playerPosition)
         {
-            
-            batRect.X += randomVelocity;
+            batPosition = new Vector2(batRect.X, batRect.Y);
+            if (flyAround)
+            {
+                if (batRect.X <= 0)
+                {
+                    randomVelocity *= -1;
+                    setTexture(content, "batOfficialRight.fw");
+                }
+                else if (batRect.X >= 4800)
+                {
+                    setTexture(content, "batOfficial.fw");
+                    randomVelocity *= -1;
+                }
+                batRect.X += randomVelocity;
+                if (batPosition.X < playerPosition.X)
+                {
+                    swoop = true;
+                    flyAround = false;
+                }
+            }
+
+            if (swoop)
+            {
+                batRect.Y += (int)fallVelocity;
+                batRect.X += randomVelocity;
+                fallVelocity -= .1;
+                if (batRect.Y <= 50)
+                {
+                    swoop = false;
+                    fallVelocity = 10;
+                    flyAround = true;
+                }
+            }
         }
     }
 }

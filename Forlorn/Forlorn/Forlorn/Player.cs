@@ -19,6 +19,14 @@ namespace Forlorn
         bool isFalling = false;
         int initialY;
         int remnantY;
+       
+        public Vector2 Position
+        {
+            get
+            {
+                return playerPosition;
+            }
+        }
         public Vector2 getPosition()
         {
             return playerPosition;
@@ -43,6 +51,7 @@ namespace Forlorn
         }
         public void update(KeyboardState kb)
         {
+            playerPosition = new Vector2(body.X, body.Y);
             remnantY = body.Y;
             if (kb.IsKeyDown(Keys.W))
             {
