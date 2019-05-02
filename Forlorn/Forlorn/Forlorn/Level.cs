@@ -185,8 +185,8 @@ namespace Forlorn
             {
                 for(int xDiff = -50; xDiff <= 50; xDiff++)
                 {
-                    int x = (int) player.GetBlockLocation().X;
-                    int y = (int) player.GetBlockLocation().Y;
+                    int x = (int) (player.CameraRectangle.X + player.CameraRectangle.Width / 2) / 16;
+                    int y = (int) (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) / 16;
 
                     if (x < 50)
                         x = 50;

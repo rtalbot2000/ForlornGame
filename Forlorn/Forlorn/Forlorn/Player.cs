@@ -22,6 +22,7 @@ namespace Forlorn
         double healthRemaining;
         Vector2 position;
         Vector2 movement;
+        Rectangle cameraRectangle;
 
         public Vector2 Position
         {
@@ -39,6 +40,14 @@ namespace Forlorn
             }
         }
 
+        public Rectangle CameraRectangle
+        {
+            get
+            {
+                return cameraRectangle;
+            }
+        }
+
         //Creates player dude
         public Player(int x, int y, ContentManager content)
         {
@@ -48,6 +57,7 @@ namespace Forlorn
             initialY = body.Y;
             dead = false;
             healthRemaining = 100d;
+            this.cameraRectangle = new Rectangle(6400 - 50, 9550 - 50, 100, 100);
         }
         //Returns texture of character
         public Texture2D getTexture()
@@ -106,6 +116,23 @@ namespace Forlorn
             if(kb.IsKeyDown(Keys.Space))
             {
                 Console.WriteLine(GetBlockLocation());
+            }
+
+            if(position.X + body.Width >= cameraRectangle.X + cameraRectangle.Width)
+            {
+                cameraRectangle.X += 2;
+            }
+            if(position.X <= cameraRectangle.X)
+            {
+                cameraRectangle.X -= 2;
+            }
+            if(position.Y + body.Height >= cameraRectangle.Y + cameraRectangle.Height)
+            {
+                cameraRectangle.Y += 2;
+            }
+            if(position.Y <= cameraRectangle.Y)
+            {
+                cameraRectangle.Y -= 2;
             }
         }
         public void setHealth(double hit)

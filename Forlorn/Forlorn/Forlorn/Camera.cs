@@ -53,9 +53,10 @@ namespace Forlorn
 
         public void Update(Player player)
         {
-            position.X = player.Position.X - (ScreenWidth / 2);
-            position.Y = player.Position.Y - (ScreenHeight / 2) - 150;
+            position.X = (player.CameraRectangle.X + player.CameraRectangle.Width / 2) - (ScreenWidth / 2);
+            position.Y = (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) - (ScreenHeight / 2) - 150;
 
+            
             if(position.X < 0)
             {
                 position.X = 0;

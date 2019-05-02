@@ -109,11 +109,11 @@ namespace Forlorn
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
 
-            if(!player.isDead())
+            if (!player.isDead())
                 spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
             
             level.Draw(player.Position, spriteBatch, gameTime);
-            
+
             spriteBatch.End();
 
             base.Draw(gameTime);
