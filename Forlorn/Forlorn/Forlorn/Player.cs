@@ -52,12 +52,13 @@ namespace Forlorn
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            body = new Rectangle(6400, 9550, 8, 24);
+            //body = new Rectangle(6400, 9550, 8, 24);
+            body = new Rectangle(3 * 400, 3 * 600 - 50, 8, 24);
             position = new Vector2(body.X, body.Y);
             initialY = body.Y;
             dead = false;
             healthRemaining = 100d;
-            this.cameraRectangle = new Rectangle(6400 - 50, 9550 - 50, 100, 100);
+            this.cameraRectangle = new Rectangle(body.X - 50, body.Y - 50, 100, 100);
         }
         //Returns texture of character
         public Texture2D getTexture()

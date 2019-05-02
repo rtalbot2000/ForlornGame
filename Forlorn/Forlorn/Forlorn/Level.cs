@@ -17,12 +17,6 @@ namespace Forlorn
 
         private Texture2D testPixel;
 
-        private int loadTimer;
-
-        private bool isDrawing;
-
-        private Thread renderThread;
-
         private Player player;
 
         private Camera camera;
@@ -32,10 +26,6 @@ namespace Forlorn
             blocks = new Block[800, 800];
 
             this.testPixel = testPixel;
-
-            this.loadTimer = 0;
-
-            isDrawing = false;
 
             this.player = p;
 
@@ -50,33 +40,22 @@ namespace Forlorn
             {
                 for (int y = 0; y < 600; y++)
                 {
-                    blocks[y, x] = new Block(0, x, y, testPixel);
+                    blocks[y, x] = new Block(0, x, y, true);
                 }
-                blocks[600, x] = new Block(2, x, 600, testPixel);
+                blocks[600, x] = new Block(2, x, 600, true);
                 for (int y = 601; y < 605; y++)
                 {
-                    blocks[y, x] = new Block(3, x, y, testPixel);
+                    blocks[y, x] = new Block(3, x, y, true);
                 }
                 for (int y = 605; y < 800; y++)
                 {
-                    blocks[y, x] = new Block(1, x, y, testPixel);
+                    blocks[y, x] = new Block(1, x, y, true);
                 }
             }
 
             GenerateCaves();
 
-            drawnBlocks = new List<Block>();
-
-            foreach (Block b in blocks)
-            {
-                if (!b.IsOffScreen(new Vector2(9600, 14370)))
-                {
-                    drawnBlocks.Add(b);
-                }
-            }
-
-            //renderThread = new Thread(() => RenderLevel(player));
-            //renderThread.Start();
+            GenerateOres();
         }
 
         public void GenerateCaves()
@@ -86,7 +65,7 @@ namespace Forlorn
             {
                 for(int y = 605; y < 799; y++)
                 {
-                    if (rand.NextDouble() < .004)
+                    if (rand.NextDouble() < .003)
                     {
                         blocks[y, x].ID = 0;
                     }
@@ -174,6 +153,92 @@ namespace Forlorn
             }
         }
 
+        public void GenerateOres()
+        {
+            Random rand = new Random();
+            
+            //Iron
+            for(int y = 610; y < 800; y++)
+            {
+                for(int x = 0; x < 800; x++)
+                {
+                    double chance = .004;
+
+                    int amtAir = 0;
+
+                    for(int xOffset = -2; xOffset <= 2; xOffset++)
+                    {
+                        for(int yOffset = -2; yOffset <= 2; yOffset++)
+                        {
+                            if (xOffset == 0 && yOffset == 0 || (x + xOffset < 0 || x + xOffset >= 800 || y + yOffset >= 800))
+                                continue;
+
+                            if(blocks[y + yOffset, x + xOffset].ID == 0)
+                            {
+                                amtAir++;
+                                chance += .0004;
+                            }
+                        }
+                    }
+
+                    //Console.WriteLine(((double)amtAir) / 25.0);
+
+                    if(((double) amtAir) / 25.0 >= .7)
+                    {
+                        chance = .0001;
+                    }
+
+                    if(rand.NextDouble() < chance)
+                    {
+                        blocks[y, x].ID = 5;
+                    }
+                }
+            }
+
+            for(int times = 0; times < 12; times++)
+            {
+                for(int y = 610; y < 799; y++)
+                {
+                    for(int x = 1; x < 799; x++)
+                    {
+                        if(blocks[y, x].ID != 5)
+                        {
+                            continue;
+                        }
+
+                        if(blocks[y - 1, x].ID != 5)
+                        {
+                            if(rand.NextDouble() < .05)
+                            {
+                                blocks[y - 1, x].ID = 5;
+                            }
+                        }
+                        if(blocks[y + 1, x].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y + 1, x].ID = 5;
+                            }
+                        }
+                        if(blocks[y, x - 1].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y, x - 1].ID = 5;
+                            }
+                        }
+                        if(blocks[y, x + 1].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y, x + 1].ID = 5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void Update(Player p)
         {
             
@@ -181,33 +246,37 @@ namespace Forlorn
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            for(int yDiff = -50; yDiff <= 50; yDiff++)
+            foreach(Block b in blocks)
             {
-                for(int xDiff = -50; xDiff <= 50; xDiff++)
-                {
-                    int x = (int) (player.CameraRectangle.X + player.CameraRectangle.Width / 2) / 16;
-                    int y = (int) (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) / 16;
-
-                    if (x < 50)
-                        x = 50;
-
-                    if (x > 750)
-                        x = 750;
-
-                    if (y < 50)
-                        y = 50;
-
-                    if (y > 750)
-                        y = 750;
-
-                    x += xDiff;
-                    y += yDiff;
-
-                    if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
-
-                    blocks[y, x].Draw(spriteBatch);
-                }
+                b.Draw(spriteBatch);
             }
+            //for(int yDiff = -50; yDiff <= 50; yDiff++)
+            //{
+            //    for(int xDiff = -50; xDiff <= 50; xDiff++)
+            //    {
+            //        int x = (int) (player.CameraRectangle.X + player.CameraRectangle.Width / 2) / 16;
+            //        int y = (int) (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) / 16;
+
+            //        if (x < 50)
+            //            x = 50;
+
+            //        if (x > 750)
+            //            x = 750;
+
+            //        if (y < 50)
+            //            y = 50;
+
+            //        if (y > 750)
+            //            y = 750;
+
+            //        x += xDiff;
+            //        y += yDiff;
+
+            //        if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
+
+            //        blocks[y, x].Draw(spriteBatch);
+            //    }
+            //}
         }
     }
 }
