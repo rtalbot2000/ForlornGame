@@ -20,7 +20,7 @@ namespace Forlorn
         SpriteBatch spriteBatch;
         Player player;
         Random randomGen = new Random();
-        Bats[] allBats = new Bats[10];
+        Bats[] allBats = new Bats[100];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);

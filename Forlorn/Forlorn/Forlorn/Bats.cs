@@ -85,7 +85,8 @@ namespace Forlorn
                     randomVelocity *= -1;
                 }
                 batRect.X += randomVelocity;
-                if (batPosition.X < playerPosition.X)
+                if (batPosition.X - 100 < playerPosition.X && batPosition.X + 100 > playerPosition.X
+                    )
                 {
                     swoop = true;
                     flyAround = false;
@@ -94,11 +95,17 @@ namespace Forlorn
 
             if (swoop)
             {
+
                 batRect.Y += (int)fallVelocity;
                 batRect.X += randomVelocity;
                 fallVelocity -= .1;
+                if (batRect.X <= 0)
+                    randomVelocity *= -1;
+                if (batRect.X >= 4800)
+                    randomVelocity *= -1;
+
                 if (batRect.Y <= 50)
-                {
+                {                   
                     swoop = false;
                     fallVelocity = 10;
                     flyAround = true;
