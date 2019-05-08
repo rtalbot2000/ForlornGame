@@ -65,14 +65,14 @@ namespace Forlorn
             {
                 for(int y = 605; y < 799; y++)
                 {
-                    if (rand.NextDouble() < .003)
+                    if (rand.NextDouble() < .0025)
                     {
                         blocks[y, x].ID = 0;
                     }
                 }
             }
 
-            for (int t = 0; t < 135; t++)
+            for (int t = 0; t < 150; t++)
             {
                 for (int x = 0; x < 800; x++)
                 {
@@ -156,9 +156,91 @@ namespace Forlorn
         public void GenerateOres()
         {
             Random rand = new Random();
-            
+
+            // Gold
+
+            for (int y = 650; y < 800; y++)
+            {
+                for (int x = 0; x < 800; x++)
+                {
+                    double chance = .004;
+
+                    int amtAir = 0;
+
+                    for (int xOffset = -2; xOffset <= 2; xOffset++)
+                    {
+                        for (int yOffset = -2; yOffset <= 2; yOffset++)
+                        {
+                            if (xOffset == 0 && yOffset == 0 || (x + xOffset < 0 || x + xOffset >= 800 || y + yOffset >= 800))
+                                continue;
+
+                            if (blocks[y + yOffset, x + xOffset].ID == 0)
+                            {
+                                amtAir++;
+                                chance += .0004;
+                            }
+                        }
+                    }
+
+                    //Console.WriteLine(((double)amtAir) / 25.0);
+
+                    if (((double)amtAir) / 25.0 >= .7)
+                    {
+                        chance = .0001;
+                    }
+
+                    if (rand.NextDouble() < chance)
+                    {
+                        blocks[y, x].ID = 5;
+                    }
+                }
+            }
+
+            for (int times = 0; times < 12; times++)
+            {
+                for (int y = 610; y < 799; y++)
+                {
+                    for (int x = 1; x < 799; x++)
+                    {
+                        if (blocks[y, x].ID != 5)
+                        {
+                            continue;
+                        }
+
+                        if (blocks[y - 1, x].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y - 1, x].ID = 6;
+                            }
+                        }
+                        if (blocks[y + 1, x].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y + 1, x].ID = 6;
+                            }
+                        }
+                        if (blocks[y, x - 1].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y, x - 1].ID = 6;
+                            }
+                        }
+                        if (blocks[y, x + 1].ID != 5)
+                        {
+                            if (rand.NextDouble() < .05)
+                            {
+                                blocks[y, x + 1].ID = 6;
+                            }
+                        }
+                    }
+                }
+            }
+
             //Iron
-            for(int y = 610; y < 800; y++)
+            for (int y = 610; y < 800; y++)
             {
                 for(int x = 0; x < 800; x++)
                 {
