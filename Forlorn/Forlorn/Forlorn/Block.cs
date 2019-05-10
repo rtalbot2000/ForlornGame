@@ -70,17 +70,9 @@ namespace Forlorn
         {
             this.id = id;
             this.location = new Vector2(x, y);
-            this.rect = new Rectangle(x * 3, y * 3, 3, 3);
+            this.rect = new Rectangle(x * 16, y * 16, 16, 16);
             this.texture = textures[id];
             this.collision = collision;
-        }
-
-        public bool IsOffScreen(Vector2 playerLocation)
-        {
-            int xDiff = (int) Math.Abs(playerLocation.X - rect.X);
-            int yDiff = (int)Math.Abs(playerLocation.Y - rect.Y);
-
-            return xDiff > 1600 / 2 || yDiff > 1600 / 2;
         }
 
         public void Draw(SpriteBatch spriteBatch)

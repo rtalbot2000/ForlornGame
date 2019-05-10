@@ -53,7 +53,7 @@ namespace Forlorn
         {
             this.texture = content.Load<Texture2D>("white");
             //body = new Rectangle(6400, 9550, 8, 24);
-            body = new Rectangle(3 * 400, 3 * 600 - 50, 8, 24);
+            body = new Rectangle(16 * 400, 16 * 600 - 50, 8, 24);
             position = new Vector2(body.X, body.Y);
             initialY = body.Y;
             dead = false;

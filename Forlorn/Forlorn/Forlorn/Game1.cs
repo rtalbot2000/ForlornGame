@@ -107,14 +107,14 @@ namespace Forlorn
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(new Color(147, 201, 227));
+            GraphicsDevice.Clear(new Color(1, 37, 77));
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
+            
+            level.Draw(player.Position, spriteBatch, gameTime);
 
             if (!player.isDead())
                 spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
-            
-            level.Draw(player.Position, spriteBatch, gameTime);
 
             spriteBatch.End();
 

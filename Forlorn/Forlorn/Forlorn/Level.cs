@@ -55,7 +55,11 @@ namespace Forlorn
 
             GenerateCaves();
 
+            CheckForLonelyBlocks();
+
             GenerateOres();
+
+            GenerateTrees();
         }
 
         public void GenerateCaves()
@@ -65,14 +69,14 @@ namespace Forlorn
             {
                 for(int y = 605; y < 799; y++)
                 {
-                    if (rand.NextDouble() < .0025)
+                    if (rand.NextDouble() < .002)
                     {
                         blocks[y, x].ID = 0;
                     }
                 }
             }
 
-            for (int t = 0; t < 150; t++)
+            for (int t = 0; t < 145; t++)
             {
                 for (int x = 0; x < 800; x++)
                 {
@@ -153,17 +157,48 @@ namespace Forlorn
             }
         }
 
+        public void CheckForLonelyBlocks()
+        {
+            for(int y = 601; y < 799; y++)
+            {
+                for(int x = 1; x < 799; x++)
+                {
+                    int amtAir = 0;
+
+                    for(int yOffset = -1; yOffset < 2; yOffset++)
+                    {
+                        for(int xOffset = -1; xOffset < 2; xOffset++)
+                        {
+                            if (xOffset == yOffset)
+                                continue;
+
+                            if (blocks[y + yOffset, x + xOffset].ID == 0)
+                                amtAir++;
+                        }
+                    }
+
+                    if(amtAir == 8)
+                    {
+                        blocks[y, x].ID = 0;
+                    }
+                }
+            }
+        }
+
         public void GenerateOres()
         {
             Random rand = new Random();
 
-            // Gold
+            // Platinum
 
-            for (int y = 650; y < 800; y++)
+            for (int y = 735; y < 800; y++)
             {
                 for (int x = 0; x < 800; x++)
                 {
-                    double chance = .004;
+                    if (blocks[y, x].ID != 1)
+                        continue;
+
+                    double chance = .002;
 
                     int amtAir = 0;
 
@@ -191,12 +226,181 @@ namespace Forlorn
 
                     if (rand.NextDouble() < chance)
                     {
+                        blocks[y, x].ID = 7;
+                    }
+                }
+            }
+
+            for (int times = 0; times < 4; times++)
+            {
+                for (int y = 610; y < 799; y++)
+                {
+                    for (int x = 1; x < 799; x++)
+                    {
+                        if (blocks[y, x].ID != 7)
+                        {
+                            continue;
+                        }
+
+                        if (blocks[y - 1, x].ID != 7)
+                        {
+                            if (rand.NextDouble() < .12)
+                            {
+                                blocks[y - 1, x].ID = 7;
+                            }
+                        }
+                        if (blocks[y + 1, x].ID != 7)
+                        {
+                            if (rand.NextDouble() < .12)
+                            {
+                                blocks[y + 1, x].ID = 7;
+                            }
+                        }
+                        if (blocks[y, x - 1].ID != 7)
+                        {
+                            if (rand.NextDouble() < .12)
+                            {
+                                blocks[y, x - 1].ID = 7;
+                            }
+                        }
+                        if (blocks[y, x + 1].ID != 7)
+                        {
+                            if (rand.NextDouble() < .12)
+                            {
+                                blocks[y, x + 1].ID = 7;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Gold
+
+            for (int y = 675; y < 800; y++)
+            {
+                for (int x = 0; x < 800; x++)
+                {
+                    if (blocks[y, x].ID != 1)
+                        continue;
+
+                    double chance = .0027;
+
+                    int amtAir = 0;
+
+                    for (int xOffset = -2; xOffset <= 2; xOffset++)
+                    {
+                        for (int yOffset = -2; yOffset <= 2; yOffset++)
+                        {
+                            if (xOffset == 0 && yOffset == 0 || (x + xOffset < 0 || x + xOffset >= 800 || y + yOffset >= 800))
+                                continue;
+
+                            if (blocks[y + yOffset, x + xOffset].ID == 0)
+                            {
+                                amtAir++;
+                                chance += .0004;
+                            }
+                        }
+                    }
+
+                    //Console.WriteLine(((double)amtAir) / 25.0);
+
+                    if (((double)amtAir) / 25.0 >= .7)
+                    {
+                        chance = .0001;
+                    }
+
+                    if (rand.NextDouble() < chance)
+                    {
+                        blocks[y, x].ID = 6;
+                    }
+                }
+            }
+
+            for (int times = 0; times < 8; times++)
+            {
+                for (int y = 610; y < 799; y++)
+                {
+                    for (int x = 1; x < 799; x++)
+                    {
+                        if (blocks[y, x].ID != 6)
+                        {
+                            continue;
+                        }
+
+                        if (blocks[y - 1, x].ID != 6)
+                        {
+                            if (rand.NextDouble() < .055)
+                            {
+                                blocks[y - 1, x].ID = 6;
+                            }
+                        }
+                        if (blocks[y + 1, x].ID != 6)
+                        {
+                            if (rand.NextDouble() < .055)
+                            {
+                                blocks[y + 1, x].ID = 6;
+                            }
+                        }
+                        if (blocks[y, x - 1].ID != 6)
+                        {
+                            if (rand.NextDouble() < .055)
+                            {
+                                blocks[y, x - 1].ID = 6;
+                            }
+                        }
+                        if (blocks[y, x + 1].ID != 6)
+                        {
+                            if (rand.NextDouble() < .055)
+                            {
+                                blocks[y, x + 1].ID = 6;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Iron
+            for (int y = 610; y < 800; y++)
+            {
+                for (int x = 0; x < 800; x++)
+                {
+                    if (blocks[y, x].ID != 1)
+                        continue;
+
+                    double chance = .006 - (y - 610) * .00002;
+
+                    int amtAir = 0;
+
+                    for (int xOffset = -2; xOffset <= 2; xOffset++)
+                    {
+                        for (int yOffset = -2; yOffset <= 2; yOffset++)
+                        {
+                            if (xOffset == 0 && yOffset == 0 || (x + xOffset < 0 || x + xOffset >= 800 || y + yOffset >= 800))
+                                continue;
+
+                            if (blocks[y + yOffset, x + xOffset].ID == 0)
+                            {
+                                amtAir++;
+                                chance += .00035;
+                            }
+                        }
+                    }
+
+                    //Console.WriteLine(((double)amtAir) / 25.0);
+
+                    if (((double)amtAir) / 25.0 >= .7)
+                    {
+                        chance = .0001;
+                    }
+
+                    if (rand.NextDouble() < chance)
+                    {
                         blocks[y, x].ID = 5;
                     }
                 }
             }
 
-            for (int times = 0; times < 12; times++)
+            for (int times = 0; times < 10; times++)
             {
                 for (int y = 610; y < 799; y++)
                 {
@@ -209,114 +413,55 @@ namespace Forlorn
 
                         if (blocks[y - 1, x].ID != 5)
                         {
-                            if (rand.NextDouble() < .05)
-                            {
-                                blocks[y - 1, x].ID = 6;
-                            }
-                        }
-                        if (blocks[y + 1, x].ID != 5)
-                        {
-                            if (rand.NextDouble() < .05)
-                            {
-                                blocks[y + 1, x].ID = 6;
-                            }
-                        }
-                        if (blocks[y, x - 1].ID != 5)
-                        {
-                            if (rand.NextDouble() < .05)
-                            {
-                                blocks[y, x - 1].ID = 6;
-                            }
-                        }
-                        if (blocks[y, x + 1].ID != 5)
-                        {
-                            if (rand.NextDouble() < .05)
-                            {
-                                blocks[y, x + 1].ID = 6;
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Iron
-            for (int y = 610; y < 800; y++)
-            {
-                for(int x = 0; x < 800; x++)
-                {
-                    double chance = .004;
-
-                    int amtAir = 0;
-
-                    for(int xOffset = -2; xOffset <= 2; xOffset++)
-                    {
-                        for(int yOffset = -2; yOffset <= 2; yOffset++)
-                        {
-                            if (xOffset == 0 && yOffset == 0 || (x + xOffset < 0 || x + xOffset >= 800 || y + yOffset >= 800))
-                                continue;
-
-                            if(blocks[y + yOffset, x + xOffset].ID == 0)
-                            {
-                                amtAir++;
-                                chance += .0004;
-                            }
-                        }
-                    }
-
-                    //Console.WriteLine(((double)amtAir) / 25.0);
-
-                    if(((double) amtAir) / 25.0 >= .7)
-                    {
-                        chance = .0001;
-                    }
-
-                    if(rand.NextDouble() < chance)
-                    {
-                        blocks[y, x].ID = 5;
-                    }
-                }
-            }
-
-            for(int times = 0; times < 12; times++)
-            {
-                for(int y = 610; y < 799; y++)
-                {
-                    for(int x = 1; x < 799; x++)
-                    {
-                        if(blocks[y, x].ID != 5)
-                        {
-                            continue;
-                        }
-
-                        if(blocks[y - 1, x].ID != 5)
-                        {
-                            if(rand.NextDouble() < .05)
+                            if (rand.NextDouble() < .0525)
                             {
                                 blocks[y - 1, x].ID = 5;
                             }
                         }
-                        if(blocks[y + 1, x].ID != 5)
+                        if (blocks[y + 1, x].ID != 5)
                         {
-                            if (rand.NextDouble() < .05)
+                            if (rand.NextDouble() < .0525)
                             {
                                 blocks[y + 1, x].ID = 5;
                             }
                         }
-                        if(blocks[y, x - 1].ID != 5)
+                        if (blocks[y, x - 1].ID != 5)
                         {
-                            if (rand.NextDouble() < .05)
+                            if (rand.NextDouble() < .0525)
                             {
                                 blocks[y, x - 1].ID = 5;
                             }
                         }
-                        if(blocks[y, x + 1].ID != 5)
+                        if (blocks[y, x + 1].ID != 5)
                         {
-                            if (rand.NextDouble() < .05)
+                            if (rand.NextDouble() < .0525)
                             {
                                 blocks[y, x + 1].ID = 5;
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public void GenerateTrees()
+        {
+            Random rand = new Random();
+
+            for(int x = 0; x < 800; x++)
+            {
+                if(rand.NextDouble() < .2)
+                {
+                    blocks[599, x].ID = 4;
+
+                    int height = rand.Next(4, 32);
+
+                    for(int y = 1; y < height; y++)
+                    {
+                        blocks[599 - y, x].ID = 4;
+                    }
+
+                    x += 3;
                 }
             }
         }
@@ -328,37 +473,33 @@ namespace Forlorn
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            foreach(Block b in blocks)
+            for (int yDiff = -50; yDiff <= 50; yDiff++)
             {
-                b.Draw(spriteBatch);
+                for (int xDiff = -50; xDiff <= 50; xDiff++)
+                {
+                    int x = (int)(player.CameraRectangle.X + player.CameraRectangle.Width / 2) / 16;
+                    int y = (int)(player.CameraRectangle.Y + player.CameraRectangle.Height / 2) / 16;
+
+                    if (x < 50)
+                        x = 50;
+
+                    if (x > 750)
+                        x = 750;
+
+                    if (y < 50)
+                        y = 50;
+
+                    if (y > 750)
+                        y = 750;
+
+                    x += xDiff;
+                    y += yDiff;
+
+                    if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
+
+                    blocks[y, x].Draw(spriteBatch);
+                }
             }
-            //for(int yDiff = -50; yDiff <= 50; yDiff++)
-            //{
-            //    for(int xDiff = -50; xDiff <= 50; xDiff++)
-            //    {
-            //        int x = (int) (player.CameraRectangle.X + player.CameraRectangle.Width / 2) / 16;
-            //        int y = (int) (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) / 16;
-
-            //        if (x < 50)
-            //            x = 50;
-
-            //        if (x > 750)
-            //            x = 750;
-
-            //        if (y < 50)
-            //            y = 50;
-
-            //        if (y > 750)
-            //            y = 750;
-
-            //        x += xDiff;
-            //        y += yDiff;
-
-            //        if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
-
-            //        blocks[y, x].Draw(spriteBatch);
-            //    }
-            //}
         }
     }
 }

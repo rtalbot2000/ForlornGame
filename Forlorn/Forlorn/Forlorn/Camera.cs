@@ -54,7 +54,7 @@ namespace Forlorn
         public void Update(Player player)
         {
             position.X = (player.CameraRectangle.X + player.CameraRectangle.Width / 2) - (ScreenWidth / 2);
-            position.Y = (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) - (ScreenHeight / 2) + 300;
+            position.Y = (player.CameraRectangle.Y + player.CameraRectangle.Height / 2) - (ScreenHeight / 2) - 150;
 
             
             if(position.X < 0)
@@ -69,9 +69,9 @@ namespace Forlorn
             {
                 position.X = 12000 - (ScreenWidth / 2);
             }
-            if(position.Y > 12000 - (ScreenHeight / 2) + 300)
+            if(position.Y > 12000 - (ScreenHeight / 2) - 150)
             {
-                position.Y = 12000 - (ScreenHeight / 2) + 300;
+                position.Y = 12000 - (ScreenHeight / 2) - 150;
             }
 
             viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));
