@@ -98,7 +98,7 @@ namespace Forlorn
 
                 batRect.Y += (int)fallVelocity;
                 batRect.X += randomVelocity;
-                fallVelocity -= .1;
+                fallVelocity -= .09;
                 if (batRect.X <= 0)
                     randomVelocity *= -1;
                 if (batRect.X >= 4800)
