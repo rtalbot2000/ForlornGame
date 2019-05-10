@@ -18,9 +18,12 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
+
         MouseState oldMouse;
         private int timer;
         private Axe axe;
+        Bats[] allBats = new Bats[10];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,9 +51,12 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
+            for (int i = 0; i < allBats.Length; i++)
+                allBats[i] = new Bats(this.Content, );
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //Loads player
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
             axe = new Axe(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content);
 
@@ -72,9 +78,12 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState kb = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                kb.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            //Updates controlled movements of player
+            player.update(kb);
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             axe.Update();
@@ -89,7 +98,9 @@ namespace Forlorn
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            spriteBatch.End();
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             axe.Draw(gameTime, spriteBatch);
