@@ -26,9 +26,15 @@ namespace Forlorn
         SpriteFont damageText;
         public int batHealth;
         Bat[] allBats = new Bat[10];
+        Player player;
+        Random randomGen = new Random();
+        Bats[] allBats = new Bats[100];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -53,9 +59,26 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
+            for (int i = 0; i < allBats.Length; i++)
+            {
+                allBats[i] = new Bats(this.Content, player.getPosition());
+                allBats[i].setPosition(new Vector2(randomGen.Next(4800), 50));
+                int randomVel;
+                if (allBats[i].spawned)
+                {
+                    randomVel = (int)Math.Round((double)randomGen.Next(1));
+                    if (randomVel == 0) 
+                        randomVel = -1 * randomGen.Next(10) + 5;
+                    else
+                        randomVel = randomGen.Next(10) + 5;
+                    allBats[i].setVelocity(randomVel);
+                }
+            }
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //Loads player
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
             for (int i = 0; i < allBats.Length; i++)
                 allBats[i] = new Bat(this.Content, new Vector2(50, 50));
@@ -85,7 +108,10 @@ namespace Forlorn
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            //Updates controlled movements of player
+            player.update(kb);
+            for (int i = 0; i < allBats.Length; i++)
+                allBats[i].batUpdate(kb, player.getPosition());
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             sword.Update();
@@ -109,6 +135,9 @@ namespace Forlorn
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            for (int i = 0; i < allBats.Length; i++)
+                spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.WhiteSmoke);
+            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
             sword.Draw(gameTime, spriteBatch);
             axe.Draw(gameTime, spriteBatch);
             pickaxe.Draw(gameTime, spriteBatch);

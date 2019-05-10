@@ -13,14 +13,17 @@ namespace Forlorn
     {
         private Texture2D batText;
         private Rectangle batRect;
-        int leftMostPoint;
         Vector2 batPosition;
+        ContentManager content;
         Random randomGen = new Random();
-        Boolean spawned;
+        public Boolean spawned;
+        int leftMostPoint;
+        int randomVelocity = -5;
+        int flyTimer;
+        int timer;
+        double fallVelocity;
         Boolean swoop;
         Boolean flyAround;
-        int flyTimer;
-        int spawnTimer;
         public Vector2 Position
         {
             get
@@ -28,18 +31,23 @@ namespace Forlorn
                 return batPosition;
             }
         }
-        public Bat(ContentManager content, Vector2 position)
+        public void setTexture(ContentManager content, String name)
         {
-            batText = content.Load<Texture2D>("white");
-            leftMostPoint = (int)position.X - 800;
-            //batPosition = new Vector2(randomGen.Next(leftMostPoint + 1800), -10);
-            batPosition = new Vector2(500, 200);
-            batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 30, 15);
+            batText = content.Load<Texture2D>(name);
+        }
+        public Bats(ContentManager content, Vector2 playerPosition)
+        {
+            this.content = content;
+            batText = content.Load<Texture2D>("batOfficial.fw");
+            leftMostPoint = (int)playerPosition.X - 450;
+            batPosition = new Vector2(randomGen.Next(1000), 50);
+            batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 60, 30);
             spawned = true;
-            spawnTimer = 300;
+            timer = (int)randomGen.Next(300);
             flyTimer = randomGen.Next(10) + 5;
+            fallVelocity = 10;
+            flyAround = true;
             swoop = false;
-            flyAround = false;
         }
         public Texture2D getTexture()
         {
@@ -49,62 +57,59 @@ namespace Forlorn
         {
             return batRect;
         }
-        public void batUpdate()
+        public void setPosition(Vector2 newPosition)
         {
-            if (spawned)
+            batPosition = newPosition;
+            batRect.X = (int)newPosition.X;
+            batRect.Y = (int)newPosition.Y;
+        }
+        public void setVelocity(int randomVel)
+        {
+            randomVelocity = randomVel;
+            spawned = false;
+            
+        }
+        public void batUpdate(KeyboardState kb, Vector2 playerPosition)
+        {
+            batPosition = new Vector2(batRect.X, batRect.Y);
+            if (flyAround)
             {
-                if (spawnTimer % 60 == 0)
-                    batRect.X += 4;
-                spawnTimer--;
-                if (spawnTimer <= 0)
+                if (batRect.X <= 0)
                 {
-                    spawned = false;
-                    spawnTimer = 0;
-                    flyAround = true;
+                    randomVelocity *= -1;
+                    setTexture(content, "batOfficialRight.fw");
+                }
+                else if (batRect.X >= 4800)
+                {
+                    setTexture(content, "batOfficial.fw");
+                    randomVelocity *= -1;
+                }
+                batRect.X += randomVelocity;
+                if (batPosition.X - 100 < playerPosition.X && batPosition.X + 100 > playerPosition.X
+                    )
+                {
+                    swoop = true;
+                    flyAround = false;
                 }
             }
-            else
-            {
-                if (flyAround)
-                {
-                    if (batRect.X < leftMostPoint)
-                        batRect.X += 8;
-                    else
-                    {
-                        int xRandomize = randomGen.Next(2);
-                        switch (xRandomize)
-                        {
-                            case 1:
-                                batRect.X += randomGen.Next(10) + 5;
-                                break;
-                            case 2:
-                                batRect.X -= randomGen.Next(10) + 5;
-                                break;
-                        }
-                        int randomize = randomGen.Next(2);
-                        if (batRect.Y < 10)
-                            randomize = 1;
-                        if (batRect.Y > 50)
-                            randomize = 0;
-                        switch (randomize)
-                        {
-                            case 1:
-                                batRect.Y += 2;
-                                break;
-                            case 0:
-                                batRect.Y -= 2;
-                                break;
-                        }
-                    }
-                    flyTimer--;
-                    if (flyTimer < 0)
-                    {
-                        flyAround = false;
-                        flyTimer = randomGen.Next(10) + 5;
-                        swoop = true;
-                    }
-                }
 
+            if (swoop)
+            {
+
+                batRect.Y += (int)fallVelocity;
+                batRect.X += randomVelocity;
+                fallVelocity -= .09;
+                if (batRect.X <= 0)
+                    randomVelocity *= -1;
+                if (batRect.X >= 4800)
+                    randomVelocity *= -1;
+
+                if (batRect.Y <= 50)
+                {                   
+                    swoop = false;
+                    fallVelocity = 10;
+                    flyAround = true;
+                }
             }
         }
     }
