@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Forlorn
 {
-    class Bats
+    class Bat
     {
         private Texture2D batText;
         private Rectangle batRect;
@@ -28,11 +28,12 @@ namespace Forlorn
                 return batPosition;
             }
         }
-        public Bats(ContentManager content, Vector2 position)
+        public Bat(ContentManager content, Vector2 position)
         {
             batText = content.Load<Texture2D>("white");
             leftMostPoint = (int)position.X - 800;
-            batPosition = new Vector2(randomGen.Next(leftMostPoint + 1800), -10);
+            //batPosition = new Vector2(randomGen.Next(leftMostPoint + 1800), -10);
+            batPosition = new Vector2(500, 200);
             batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 30, 15);
             spawned = true;
             spawnTimer = 300;
@@ -48,7 +49,7 @@ namespace Forlorn
         {
             return batRect;
         }
-        public void batUpdate(KeyboardState kb)
+        public void batUpdate()
         {
             if (spawned)
             {

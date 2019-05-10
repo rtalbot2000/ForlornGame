@@ -11,38 +11,40 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Forlorn
 {
-    class Axe
+    class Pickaxe
     {
-        public Texture2D axeTexture;
-        public Rectangle axeRect;
-        public Rectangle batRect;
-        public int batHealth;
+        public Texture2D pickTexture;
+        public Rectangle pickRect;
         public int degrees;
-        private int damage;
+        public int pickType;
         bool isSwinging = false;
         private int timer = 0;
         Vector2 spot;
         MouseState oldMouse = Mouse.GetState();
 
-        public Axe(int x, int y, int degrees_, ContentManager content, int axeType_)
+        public Pickaxe(int x, int y, int degrees_, ContentManager content, int pickType_)
         {
-            switch (axeType_)
+            switch (pickType_)
             {
                 case 0:
-                    this.axeTexture = content.Load<Texture2D>("Tools/iron axe"); //iron
-                    damage = 1;
+                    this.pickTexture = content.Load<Texture2D>("Tools/wood axe"); //wood
                     break;
                 case 1:
-                    this.axeTexture = content.Load<Texture2D>("Tools/gold axe"); //gold
-                    damage = 2;
+                    this.pickTexture = content.Load<Texture2D>("Tools/steel axe"); //iron
                     break;
                 case 2:
-                    this.axeTexture = content.Load<Texture2D>("Tools/platinum axe"); //platinum
-                    damage = 3;
+                    this.pickTexture = content.Load<Texture2D>("Tools/gold pickaxe"); //gold
+                    break;
+                case 3:
+                    this.pickTexture = content.Load<Texture2D>("Tools/platinum axe"); //platinum
+                    break;
+                case 4:
+                    this.pickTexture = content.Load<Texture2D>("Tools/crystal pickaxe"); //crystal
                     break;
             }
-            axeRect = new Rectangle(x, y, 30, 30);
+            pickRect = new Rectangle(x, y, 30, 30);
             degrees = degrees_;
+            pickType = pickType_;
         }
 
         public void Update()
@@ -71,19 +73,15 @@ namespace Forlorn
                     timer = 0;
                 }
             }
-            if (axeRect.Intersects(batRect))
-            {
-                batHealth -= damage;
-            }
             oldMouse = mouse;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float radians = MathHelper.ToRadians(degrees);
-            spot = new Vector2(0, axeTexture.Height);
+            spot = new Vector2(0, pickTexture.Height);
 
-            spriteBatch.Draw(axeTexture, axeRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
+            spriteBatch.Draw(pickTexture, pickRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
         }
 
     }

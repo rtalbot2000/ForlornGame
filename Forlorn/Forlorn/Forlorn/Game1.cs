@@ -18,12 +18,14 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
-
         MouseState oldMouse;
-        private int timer;
+        
+        private Sword sword;
         private Axe axe;
-        Bats[] allBats = new Bats[10];
+        private Pickaxe pickaxe;
+        SpriteFont damageText;
+        public int batHealth;
+        Bat[] allBats = new Bat[10];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,8 +42,8 @@ namespace Forlorn
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
-            timer = 0;
             oldMouse = Mouse.GetState();
+            batHealth = 10;
             base.Initialize();
         }
 
@@ -51,14 +53,17 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
-            for (int i = 0; i < allBats.Length; i++)
-                allBats[i] = new Bats(this.Content, );
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //Loads player
-            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
+
             // TODO: use this.Content to load your game content here
-            axe = new Axe(50, graphics.PreferredBackBufferHeight / 2, 0, this.Content);
+            for (int i = 0; i < allBats.Length; i++)
+                allBats[i] = new Bat(this.Content, new Vector2(50, 50));
+
+            damageText = this.Content.Load<SpriteFont>("DamageText");
+            sword = new Sword(300, 400, -45, this.Content, 3);
+            axe = new Axe(100, graphics.PreferredBackBufferHeight / 2, -45, this.Content, 2);
+            pickaxe = new Pickaxe(150, graphics.PreferredBackBufferHeight / 2, 0, this.Content, 2);
 
         }
         /// <summary>
@@ -78,16 +83,19 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            KeyboardState kb = Keyboard.GetState();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                kb.IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            //Updates controlled movements of player
-            player.update(kb);
+
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
+            sword.Update();
             axe.Update();
+            pickaxe.Update();
             oldMouse = mouse;
+            //for (int i = 0; i < allBats.Length; i++)
+            //{
+            //    allBats[i].batUpdate();
+            //}
             base.Update(gameTime);
         }
 
@@ -98,12 +106,16 @@ namespace Forlorn
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
-            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
-            spriteBatch.End();
+
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            sword.Draw(gameTime, spriteBatch);
             axe.Draw(gameTime, spriteBatch);
+            pickaxe.Draw(gameTime, spriteBatch);
+            for (int i = 0; i < allBats.Length; i++)
+            {
+                spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
