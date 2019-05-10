@@ -19,7 +19,8 @@ namespace Forlorn
         bool isFalling = false;
         int initialY;
         int remnantY;
-       
+        double health;
+
         public Vector2 Position
         {
             get
@@ -38,6 +39,7 @@ namespace Forlorn
             playerPosition = new Vector2(x, y);
             body = new Rectangle(x, y, 8, 24);
             initialY = body.Y;
+            health = 100d;
         }
         //Returns texture of character
         public Texture2D getTexture()
@@ -72,6 +74,25 @@ namespace Forlorn
                     timer = 0;
                     isJumping = false;
                 }
+            }
+        }
+        public void updateHealth(String item)
+        {
+            switch (item)
+            {
+                case "bat":
+                    health -= .5d;
+                    break;
+                case "wolf":
+                    health -= 2.5d;
+                    break;
+                case "ghoul":
+                    health -= 1.5d;
+                    break;
+            }
+            if (health <= 0)
+            {
+                //game over screen
             }
         }
     }

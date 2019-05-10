@@ -96,6 +96,7 @@ namespace Forlorn
             player.update(kb);
             for (int i = 0; i < allBats.Length; i++)
                 allBats[i].batUpdate(kb, player.getPosition());
+            if()
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
