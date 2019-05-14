@@ -21,6 +21,8 @@ namespace Forlorn
         Player player;
         Random randomGen = new Random();
         Bats[] allBats = new Bats[100];
+        bool endScreen = false;
+        SpriteFont font;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -65,6 +67,7 @@ namespace Forlorn
                     allBats[i].setVelocity(randomVel);
                 }
             }
+            font = Content.Load<SpriteFont>("SpriteFont1");
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Loads player
@@ -95,8 +98,17 @@ namespace Forlorn
             //Updates controlled movements of player
             player.update(kb);
             for (int i = 0; i < allBats.Length; i++)
+            {
                 allBats[i].batUpdate(kb, player.getPosition());
-            if()
+                if (allBats[i].getRect().Intersects(player.getRect()))
+                {
+                    endScreen = player.updateHealth("bat");
+                }
+                if (endScreen)
+                {
+                    //gameOver();
+                }
+            }
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
@@ -112,6 +124,7 @@ namespace Forlorn
             for (int i = 0; i < allBats.Length; i++)
                 spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.WhiteSmoke);
             spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            spriteBatch.DrawString(font, String.Concat(player.health), new Vector2(0, 200), Color.White);
             spriteBatch.End();
             // TODO: Add your drawing code here
 

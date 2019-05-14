@@ -21,6 +21,8 @@ namespace Forlorn
         int randomVelocity = -5;
         int flyTimer;
         int timer;
+        int batHealth;
+        bool reveal;
         double fallVelocity;
         Boolean swoop;
         Boolean flyAround;
@@ -43,11 +45,13 @@ namespace Forlorn
             batPosition = new Vector2(randomGen.Next(1000), 50);
             batRect = new Rectangle((int)batPosition.X, (int)batPosition.Y, 60, 30);
             spawned = true;
+            batHealth = 8;
             timer = (int)randomGen.Next(300);
             flyTimer = randomGen.Next(10) + 5;
             fallVelocity = 10;
             flyAround = true;
             swoop = false;
+            reveal = true;
         }
         public Texture2D getTexture()
         {
@@ -67,7 +71,11 @@ namespace Forlorn
         {
             randomVelocity = randomVel;
             spawned = false;
-            
+
+        }
+        public void updateBatHealth(String item)
+        {
+
         }
         public void batUpdate(KeyboardState kb, Vector2 playerPosition)
         {

@@ -19,7 +19,7 @@ namespace Forlorn
         bool isFalling = false;
         int initialY;
         int remnantY;
-        double health;
+        public double health;
 
         public Vector2 Position
         {
@@ -76,7 +76,7 @@ namespace Forlorn
                 }
             }
         }
-        public void updateHealth(String item)
+        public bool updateHealth(String item)
         {
             switch (item)
             {
@@ -92,8 +92,9 @@ namespace Forlorn
             }
             if (health <= 0)
             {
-                //game over screen
+                return true;
             }
+            return false;
         }
     }
 }
