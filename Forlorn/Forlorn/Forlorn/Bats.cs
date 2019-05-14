@@ -9,10 +9,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Forlorn
 {
-    class Bat
+    class Bats
     {
         private Texture2D batText;
         private Rectangle batRect;
+        public int batHealth;
         Vector2 batPosition;
         ContentManager content;
         Random randomGen = new Random();
@@ -48,6 +49,7 @@ namespace Forlorn
             fallVelocity = 10;
             flyAround = true;
             swoop = false;
+            batHealth = 50;
         }
         public Texture2D getTexture()
         {
@@ -56,6 +58,10 @@ namespace Forlorn
         public Rectangle getRect()
         {
             return batRect;
+        }
+        public int getHealth()
+        {
+            return batHealth;
         }
         public void setPosition(Vector2 newPosition)
         {

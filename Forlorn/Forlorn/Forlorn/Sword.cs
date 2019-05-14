@@ -14,17 +14,13 @@ namespace Forlorn
     class Sword
     {
         public Texture2D swordTexture;
-        public Texture2D batTexture;
         public Rectangle swordRect;
-        public Rectangle batRect;
-        public Rectangle topPoint, midPoint, botPoint;
-        public Texture2D topTex, midTex, botTex;
-        public int batHealth = 200;
+        public int batHealth = 60;
         SpriteFont damageText;
 
-        public int degrees, degrees2;
+        public int degrees;
         public int swordType;
-        private int damage;
+        public int damage;
         bool isSwinging = false;
         private int timer = 0;
         Vector2 spot;
@@ -40,40 +36,32 @@ namespace Forlorn
                     break;
                 case 1:
                     this.swordTexture = content.Load<Texture2D>("Tools/iron sword"); //iron
-                    damage = 3;
+                    damage = 5;
                     break;
                 case 2:
                     this.swordTexture = content.Load<Texture2D>("Tools/gold sword"); //gold
-                    damage = 4;
+                    damage = 8;
                     break;
                 case 3:
                     this.swordTexture = content.Load<Texture2D>("Tools/axe"); //platinum
-                    damage = 5;
+                    damage = 12;
                     break;
                 case 4:
                     this.swordTexture = content.Load<Texture2D>("Tools/crystal sword"); //crystal
-                    damage = 6;
+                    damage = 15;
                     break;
             }
             swordRect = new Rectangle(x, y, 30, 30);
             degrees = degrees_;
             swordType = swordType_;
             damageText = content.Load<SpriteFont>("DamageText");
-            batRect = new Rectangle(310, 210, 30, 30);
-            topPoint = new Rectangle(swordRect.X + 45, swordRect.Y + 16, 10, 10);
-            botPoint = new Rectangle(swordRect.X + 16, swordRect.Y + 16, 10, 10);
-            midPoint = new Rectangle(swordRect.X + 31, swordRect.Y + 16, 10, 10);
-            topTex = content.Load<Texture2D>("Tools/sword");
-            midTex = content.Load<Texture2D>("Tools/sword");
-            botTex = content.Load<Texture2D>("Tools/sword");
-            degrees2 = 0;
-            batTexture = content.Load<Texture2D>("bat");
+            //bat = Bat(content, new Vector2(200, 1000));
         }
 
-        public void Update()
+        public void Update(Bats[] allBats)
         {
             MouseState mouse = Mouse.GetState();
- 
+
             if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton != ButtonState.Pressed)
             {
                 if (!isSwinging)
@@ -82,7 +70,7 @@ namespace Forlorn
                 }
             }
 
-            if(isSwinging == true)
+            if (isSwinging == true)
             {
                 timer++;
                 if (timer < 20)
@@ -96,28 +84,40 @@ namespace Forlorn
                     timer = 0;
                 }
 
-                if (swordRect.Intersects(batRect))
+                for (int i = 0; i < allBats.Length; i++)
                 {
-                    batHealth -= damage;
+                    if (swordRect.Intersects(allBats[i].getRect()))
+                    {
+                        batHealth = allBats[i].getHealth();
+                        batHealth -= 100;
+                    }
                 }
             }
+
             oldMouse = mouse;
+        }
+
+
+        public Texture2D getTexture()
+        {
+            return swordTexture;
+        }
+
+        public Rectangle getRect()
+        {
+            return swordRect;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float radians = MathHelper.ToRadians(degrees);
-            float radians2 = MathHelper.ToRadians(degrees2);
             spot = new Vector2(0, swordTexture.Height);
-            
+
             spriteBatch.Draw(swordTexture, swordRect, null, Color.White, radians, spot, SpriteEffects.None, 0);
-            spriteBatch.Draw(botTex, botPoint, null, Color.Red, radians2, spot, SpriteEffects.None, 0);
-            spriteBatch.Draw(midTex, midPoint, null, Color.Red, radians2, spot, SpriteEffects.None, 0);
-            spriteBatch.Draw(topTex, topPoint, null, Color.Red, radians2, spot, SpriteEffects.None, 0);
+
             if (batHealth > 0)
             {
-                spriteBatch.DrawString(damageText, batHealth + "", new Vector2(0, 100), Color.Red);
-                spriteBatch.Draw(batTexture, batRect, Color.Gray);
+                //spriteBatch.DrawString(damageText, batHealth + "", new Vector2(0, 100), Color.Red);
             }
 
         }

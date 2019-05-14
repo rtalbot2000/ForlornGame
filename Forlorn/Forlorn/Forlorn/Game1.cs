@@ -19,13 +19,12 @@ namespace Forlorn
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         MouseState oldMouse;
-        
+
         private Sword sword;
         private Axe axe;
         private Pickaxe pickaxe;
         SpriteFont damageText;
         public int batHealth;
-        Bat[] allBats = new Bat[10];
         Player player;
         Random randomGen = new Random();
         Bats[] allBats = new Bats[100];
@@ -49,7 +48,6 @@ namespace Forlorn
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
             oldMouse = Mouse.GetState();
-            batHealth = 10;
             base.Initialize();
         }
 
@@ -80,11 +78,9 @@ namespace Forlorn
             //Loads player
             player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             // TODO: use this.Content to load your game content here
-            for (int i = 0; i < allBats.Length; i++)
-                allBats[i] = new Bat(this.Content, new Vector2(50, 50));
 
             damageText = this.Content.Load<SpriteFont>("DamageText");
-            sword = new Sword(300, 400, -45, this.Content, 3);
+            sword = new Sword(300, graphics.PreferredBackBufferHeight / 2, -45, this.Content, 1);
             axe = new Axe(100, graphics.PreferredBackBufferHeight / 2, -45, this.Content, 2);
             pickaxe = new Pickaxe(150, graphics.PreferredBackBufferHeight / 2, 0, this.Content, 2);
 
@@ -109,19 +105,21 @@ namespace Forlorn
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             //Updates controlled movements of player
+            KeyboardState kb = Keyboard.GetState();
+
             player.update(kb);
             for (int i = 0; i < allBats.Length; i++)
+            {
                 allBats[i].batUpdate(kb, player.getPosition());
+                //sword.Update(allBats[i]);
+            }
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
-            sword.Update();
             axe.Update();
             pickaxe.Update();
+            sword.Update(allBats);
             oldMouse = mouse;
-            //for (int i = 0; i < allBats.Length; i++)
-            //{
-            //    allBats[i].batUpdate();
-            //}
+
             base.Update(gameTime);
         }
 
@@ -143,7 +141,9 @@ namespace Forlorn
             pickaxe.Draw(gameTime, spriteBatch);
             for (int i = 0; i < allBats.Length; i++)
             {
+
                 spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.White);
+                spriteBatch.DrawString(damageText, sword.batHealth + "", new Vector2(0, 100), Color.Red);
             }
             spriteBatch.End();
             base.Draw(gameTime);
