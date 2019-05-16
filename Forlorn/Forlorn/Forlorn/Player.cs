@@ -82,8 +82,21 @@ namespace Forlorn
             remnantY = body.Y;
             if (kb.IsKeyDown(Keys.W))
             {
-                if (!isJumping)
-                    isJumping = true;
+                if(body.Y > 0)
+                {
+                    body.Y -= 2;
+                    position.Y -= 2;
+                    movement.Y = -2;
+                }
+            }
+            else if(kb.IsKeyDown(Keys.S))
+            {
+                if (body.Y < 16 * 8 * 60)
+                {
+                    body.Y += 2;
+                    position.Y += 2;
+                    movement.Y = 2;
+                }
             }
             if (kb.IsKeyDown(Keys.A))
             {

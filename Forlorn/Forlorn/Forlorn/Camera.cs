@@ -69,9 +69,9 @@ namespace Forlorn
             {
                 position.X = 12000 - (ScreenWidth / 2);
             }
-            if(position.Y > 12000 - (ScreenHeight / 2) - 150)
+            if(position.Y > 12100 - (ScreenHeight / 2))
             {
-                position.Y = 12000 - (ScreenHeight / 2) - 150;
+                position.Y = 12100 - (ScreenHeight / 2);
             }
 
             viewMatrix = Matrix.CreateTranslation(new Vector3(-position, 0));

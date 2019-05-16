@@ -45,8 +45,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test\BlockTestPixel.png">
-      <Name>BlockTestPixel</Name>
+    <Compile Include="BlockHighlight.png">
+      <Name>BlockHighlight</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

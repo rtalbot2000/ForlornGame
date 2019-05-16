@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,16 +76,21 @@ namespace Forlorn
             this.collision = collision;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, bool isHighlighted)
         {
             if(texture == null)
             {
                 return;
             }
             spriteBatch.Draw(texture, rect, Color.White);
+            if(isHighlighted && id != 0)
+            {
+                spriteBatch.Draw(highlightTexture, rect, Color.White);
+            }
         }
 
         private static Texture2D[] textures;
+        private static Texture2D highlightTexture;
 
         public static void LoadTextures(ContentManager content)
         {
@@ -96,6 +102,8 @@ namespace Forlorn
             textures[5] = content.Load<Texture2D>("blocks/iron");
             textures[6] = content.Load<Texture2D>("blocks/gold");
             textures[7] = content.Load<Texture2D>("blocks/platinum");
+
+            highlightTexture = content.Load<Texture2D>("BlockHighlight");
         }
     }
 }

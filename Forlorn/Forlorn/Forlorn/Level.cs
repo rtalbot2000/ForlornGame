@@ -13,23 +13,21 @@ namespace Forlorn
     {
         private Block[,] blocks;
 
-        volatile private List<Block> drawnBlocks;
-
-        private Texture2D testPixel;
-
         private Player player;
 
         private Camera camera;
 
-        public Level(Texture2D testPixel, Player p, Camera camera)
+        private Vector2 mouseBlockLocation;
+
+        public Level(Player p, Camera camera)
         {
             blocks = new Block[800, 800];
-
-            this.testPixel = testPixel;
 
             this.player = p;
 
             this.camera = camera;
+
+            mouseBlockLocation = new Vector2(0, 0);
 
             GenerateLevel();
         }
@@ -466,9 +464,10 @@ namespace Forlorn
             }
         }
 
-        public void Update(Player p)
+        public void Update(MouseState mouse)
         {
-            
+            mouseBlockLocation.X = (int) (player.CameraRectangle.Center.X + mouse.X) / 16 - 50;
+            mouseBlockLocation.Y = (int) (player.CameraRectangle.Center.Y + mouse.Y - 4) / 16 - 39;
         }
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)
@@ -497,7 +496,7 @@ namespace Forlorn
 
                     if (x < 0 || x >= 800 || y < 0 || y >= 800) continue;
 
-                    blocks[y, x].Draw(spriteBatch);
+                    blocks[y, x].Draw(spriteBatch, (x == mouseBlockLocation.X && y == mouseBlockLocation.Y));
                 }
             }
         }

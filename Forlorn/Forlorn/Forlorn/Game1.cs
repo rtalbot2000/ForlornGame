@@ -21,8 +21,6 @@ namespace Forlorn
         Player player;
         Level level;
 
-        Texture2D testPixel;
-
         Camera camera;
 
         public Game1()
@@ -45,6 +43,8 @@ namespace Forlorn
             graphics.PreferredBackBufferHeight = 16 * 60;
             graphics.ApplyChanges();
 
+            IsMouseVisible = true;
+
             camera = new Camera(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             base.Initialize();
@@ -62,11 +62,10 @@ namespace Forlorn
             player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
             
             // TODO: use this.Content to load your game content here
-            testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
             Block.LoadTextures(this.Content);
 
-            this.level = new Level(testPixel, player, camera);
+            this.level = new Level(player, camera);
         }
 
         /// <summary>
@@ -93,8 +92,8 @@ namespace Forlorn
             //Updates controlled movements of player
             player.update(kb);
             // TODO: Add your update logic here
-
-            level.Update(player);
+            
+            level.Update(Mouse.GetState());
 
             camera.Update(player);
 
