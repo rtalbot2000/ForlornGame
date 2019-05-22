@@ -19,11 +19,29 @@ namespace Forlorn
 
         private Vector2 mouseBlockLocation;
 
+        public Camera Camera
+        {
+            get
+            {
+                return camera;
+            }
+        }
+
+        public Player Player
+        {
+            get
+            {
+                return player;
+            }
+        }
+
         public Level(Player p, Camera camera)
         {
             blocks = new Block[800, 800];
 
             this.player = p;
+
+            p.Inventory = new Inventory(this);
 
             this.camera = camera;
 
@@ -466,8 +484,8 @@ namespace Forlorn
 
         public void Update(MouseState mouse)
         {
-            mouseBlockLocation.X = (int) (player.CameraRectangle.Center.X + mouse.X) / 16 - 50;
-            mouseBlockLocation.Y = (int) (player.CameraRectangle.Center.Y + mouse.Y - 4) / 16 - 39;
+            mouseBlockLocation.X = (int) (camera.Position.X + 800 + mouse.X) / 16 - 50;
+            mouseBlockLocation.Y = (int) (camera.Position.Y + 16 * 30 + mouse.Y - 4) / 16 - 30;
         }
 
         public void Draw(Vector2 playerLocation, SpriteBatch spriteBatch, GameTime gameTime)

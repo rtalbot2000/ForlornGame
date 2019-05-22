@@ -64,6 +64,7 @@ namespace Forlorn
             // TODO: use this.Content to load your game content here
 
             Block.LoadTextures(this.Content);
+            Inventory.LoadTexture(this.Content);
 
             this.level = new Level(player, camera);
         }
@@ -109,11 +110,13 @@ namespace Forlorn
             GraphicsDevice.Clear(new Color(1, 37, 77));
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
-            
+
             level.Draw(player.Position, spriteBatch, gameTime);
 
             if (!player.isDead())
                 spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+
+            player.Inventory.Draw(spriteBatch);
 
             spriteBatch.End();
 

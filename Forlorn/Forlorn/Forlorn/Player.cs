@@ -23,6 +23,9 @@ namespace Forlorn
         Vector2 position;
         Vector2 movement;
         Rectangle cameraRectangle;
+        Inventory inventory;
+
+        KeyboardState oldKey;
 
         public Vector2 Position
         {
@@ -48,6 +51,18 @@ namespace Forlorn
             }
         }
 
+        public Inventory Inventory
+        {
+            get
+            {
+                return inventory;
+            }
+            set
+            {
+                this.inventory = value;
+            }
+        }
+
         //Creates player dude
         public Player(int x, int y, ContentManager content)
         {
@@ -59,6 +74,8 @@ namespace Forlorn
             dead = false;
             healthRemaining = 100d;
             this.cameraRectangle = new Rectangle(body.X - 50, body.Y - 50, 100, 100);
+
+            oldKey = Keyboard.GetState();
         }
         //Returns texture of character
         public Texture2D getTexture()
@@ -91,7 +108,7 @@ namespace Forlorn
             }
             else if(kb.IsKeyDown(Keys.S))
             {
-                if (body.Y < 16 * 8 * 60)
+                if (body.Y < 16 * 800)
                 {
                     body.Y += 2;
                     position.Y += 2;
@@ -147,6 +164,18 @@ namespace Forlorn
             if(position.Y <= cameraRectangle.Y)
             {
                 cameraRectangle.Y -= 2;
+            }
+
+            if(kb.IsKeyDown(Keys.E) && !oldKey.IsKeyDown(Keys.E))
+            {
+                inventory.SwitchOpenState();
+            }
+
+            oldKey = kb;
+
+            if(inventory != null)
+            {
+                inventory.Update();
             }
         }
         public void setHealth(double hit)
