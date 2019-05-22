@@ -14,7 +14,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -31,59 +30,128 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="white.png">
+    <Compile Include="Tools\sword.png">
+      <Name>sword</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="white.jpg">
       <Name>white</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test\pixel.png">
-      <Name>pixel</Name>
+    <Compile Include="Tools\axe.png">
+      <Name>axe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test\BlockTestPixel.png">
-      <Name>BlockTestPixel</Name>
+    <Compile Include="Tools\steel axe.png">
+      <Name>steel axe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="blocks\dirt.JPG">
-      <Name>dirt</Name>
+    <Compile Include="Tools\crystal pickaxe.png">
+      <Name>crystal pickaxe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\gold.JPG">
-      <Name>gold</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\wood axe.png">
+      <Name>wood axe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\grass.JPG">
-      <Name>grass</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\gold pickaxe.png">
+      <Name>gold pickaxe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\iron.JPG">
-      <Name>iron</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\wood sword.png">
+      <Name>wood sword</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\platinum.JPG">
-      <Name>platinum</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\iron sword.png">
+      <Name>iron sword</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\stone.JPG">
-      <Name>stone</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\gold sword.png">
+      <Name>gold sword</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="blocks\wood.JPG">
-      <Name>wood</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\crystal sword.png">
+      <Name>crystal sword</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\iron axe.png">
+      <Name>iron axe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\platinum axe.png">
+      <Name>platinum axe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools\gold axe.png">
+      <Name>gold axe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DamageText.spritefont">
+      <Name>DamageText</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bat.png">
+      <Name>bat</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="batOfficial.fw.png">
+      <Name>batOfficial.fw</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="batOfficialRight.fw.png">
+      <Name>batOfficialRight.fw</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

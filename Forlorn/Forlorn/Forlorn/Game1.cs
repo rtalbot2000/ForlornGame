@@ -18,16 +18,23 @@ namespace Forlorn
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        MouseState oldMouse;
+
+        private Sword sword;
+        private Axe axe;
+        private Pickaxe pickaxe;
+        SpriteFont damageText;
+        public int batHealth;
         Player player;
-        Level level;
-
-        Texture2D testPixel;
-
-        Camera camera;
-
+        Random randomGen = new Random();
+        List<Bats> allBats;
+        Item item;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -40,12 +47,10 @@ namespace Forlorn
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
+            oldMouse = Mouse.GetState();
 
-            graphics.PreferredBackBufferWidth = 16 * 100;
-            graphics.PreferredBackBufferHeight = 16 * 60;
-            graphics.ApplyChanges();
-
-            camera = new Camera(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            allBats = new List<Bats>();
 
             base.Initialize();
         }
@@ -56,19 +61,34 @@ namespace Forlorn
         /// </summary>
         protected override void LoadContent()
         {
+            player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
+            for (int i = 0; i < 100; i++)
+            {
+                allBats.Add(new Bats(this.Content, player.getPosition()));
+                allBats[i].setPosition(new Vector2(randomGen.Next(4800), 50));
+                int randomVel;
+                if (allBats[i].spawned)
+                {
+                    randomVel = (int)Math.Round((double)randomGen.Next(1));
+                    if (randomVel == 0) 
+                        randomVel = -1 * randomGen.Next(10) + 5;
+                    else
+                        randomVel = randomGen.Next(10) + 5;
+                    allBats[i].setVelocity(randomVel);
+                }
+            }
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Loads player
             player = new Player(50, graphics.PreferredBackBufferHeight / 2, this.Content);
-            
             // TODO: use this.Content to load your game content here
-            testPixel = Content.Load<Texture2D>("test/BlockTestPixel");
 
-            Block.LoadTextures(this.Content);
+            damageText = this.Content.Load<SpriteFont>("DamageText");
+            sword = new Sword(1, true, null, 300, graphics.PreferredBackBufferHeight / 2, -45, this.Content, 4);
+            axe = new Axe(100, graphics.PreferredBackBufferHeight / 2, -45, this.Content, 2);
+            pickaxe = new Pickaxe(150, graphics.PreferredBackBufferHeight / 2, 0, this.Content, 2);
 
-            this.level = new Level(testPixel, player, camera);
         }
-
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -86,17 +106,22 @@ namespace Forlorn
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            KeyboardState kb = Keyboard.GetState();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                kb.IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             //Updates controlled movements of player
+            KeyboardState kb = Keyboard.GetState();
+
             player.update(kb);
+            for (int i = 0; i < allBats.Count; i++)
+            {
+                allBats[i].batUpdate(kb, player.getPosition());
+            }
             // TODO: Add your update logic here
-
-            level.Update(player);
-
-            camera.Update(player);
+            MouseState mouse = Mouse.GetState();
+            axe.Update(allBats);
+            pickaxe.Update(allBats);
+            sword.Update(allBats);
+            oldMouse = mouse;
 
             base.Update(gameTime);
         }
@@ -107,17 +132,23 @@ namespace Forlorn
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(new Color(1, 37, 77));
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.ViewMatrix);
-            
-            level.Draw(player.Position, spriteBatch, gameTime);
+            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            for (int i = 0; i < allBats.Count; i++)
+                spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.WhiteSmoke);
+            spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
+            sword.Draw(gameTime, spriteBatch);
+            axe.Draw(gameTime, spriteBatch);
+            pickaxe.Draw(gameTime, spriteBatch);
+            for (int i = 0; i < allBats.Count; i++)
+            {
 
-            if (!player.isDead())
-                spriteBatch.Draw(player.getTexture(), player.getRect(), Color.WhiteSmoke);
-
+                spriteBatch.Draw(allBats[i].getTexture(), allBats[i].getRect(), Color.White);
+                //spriteBatch.DrawString(damageText,  + "", new Vector2(0, 100), Color.Red);
+            }
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
