@@ -15,7 +15,6 @@ namespace Forlorn
         private Rectangle body;
         int timer = 0;
         bool isJumping = false;
-        Vector2 playerPosition;
         bool isFalling = false;
         int initialY;
         int remnantY;
@@ -32,12 +31,15 @@ namespace Forlorn
         {
             get
             {
-                return playerPosition;
+                return position;
             }
         }
-        public Vector2 getPosition()
+
+        public Vector2 Movement
         {
-            return playerPosition;
+            get
+            {
+                return movement;
             }
         }
 
@@ -65,8 +67,9 @@ namespace Forlorn
         public Player(int x, int y, ContentManager content)
         {
             this.texture = content.Load<Texture2D>("white");
-            playerPosition = new Vector2(x, y);
-            body = new Rectangle(x, y, 8, 24);
+            //body = new Rectangle(6400, 9550, 8, 24);
+            body = new Rectangle(16 * 400, 16 * 600 - 50, 8, 24);
+            position = new Vector2(body.X, body.Y);
             initialY = body.Y;
             dead = false;
             healthRemaining = 100d;
@@ -84,9 +87,15 @@ namespace Forlorn
         {
             return body;
         }
+
+        public Vector2 GetBlockLocation()
+        {
+            return new Vector2((float) Math.Floor(position.X / 16), 
+                (float) Math.Floor(position.Y / 16));
+        }
+
         public void update(KeyboardState kb)
         {
-            playerPosition = new Vector2(body.X, body.Y);
             remnantY = body.Y;
             if (kb.IsKeyDown(Keys.W))
             {
@@ -104,17 +113,31 @@ namespace Forlorn
                     body.Y += 2;
                     position.Y += 2;
                     movement.Y = 2;
-            }
+                }
             }
             if (kb.IsKeyDown(Keys.A))
-                body.X--;
-            if (kb.IsKeyDown(Keys.D))
-                body.X++;
+            {
+                if (body.X > 0)
+                {
+                    body.X -= 2;
+                    position.X -= 2;
+                    movement.X = -2;
+                }
+            } else if (kb.IsKeyDown(Keys.D))
+            {
+                if (body.X + body.Width < 800 * 16)
+                {
+                    body.X += 2;
+                    position.X += 2;
+                    movement.X = 2;
+                }
+            }
             if (isJumping)
             {
                 timer++;
                 double jumpVelocity = 10 + -0.5d * timer;
                 body.Y -= (int)jumpVelocity;
+                position.Y = body.Y;
                 if (body.Y >= initialY)
                 {
                     timer = 0;
@@ -161,6 +184,9 @@ namespace Forlorn
             if (healthRemaining <= 0)
                 dead = true;
         }
+        public Boolean isDead()
+        {
+            return dead;
         }
     }
 }
